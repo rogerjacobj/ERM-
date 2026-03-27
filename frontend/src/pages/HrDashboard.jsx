@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import { API_BASE_URL } from '../config/api'
 import './tickets.css'
 import './dashboard.css'
 
@@ -19,14 +20,14 @@ const HrDashboard = () => {
     const token = localStorage.getItem('token')
     
     // Fetch tickets
-    fetch('/api/all-tickets', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    fetch(`${API_BASE_URL}/api/all-tickets`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
       .then((r) => { if (!r.ok) throw new Error(`Status ${r.status}`); return r.json() })
       .then((json) => setTicketsByUser(json.ticketsByUser || {}))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
 
     // Fetch employees
-    fetch('/api/employees', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    fetch(`${API_BASE_URL}/api/employees`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
       .then((r) => { if (!r.ok) throw new Error(`Status ${r.status}`); return r.json() })
       .then((json) => setEmployees(json.employees || []))
       .catch((err) => setError(err.message))
@@ -40,7 +41,7 @@ const HrDashboard = () => {
   const updateStatus = async (ticketId, newStatus) => {
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch(`/api/employee-tickets/${ticketId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/employee-tickets/${ticketId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' },
         body: JSON.stringify({ status: newStatus }),
@@ -64,7 +65,7 @@ const HrDashboard = () => {
     e.preventDefault()
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch('/api/employees', {
+      const res = await fetch(`${API_BASE_URL}/api/employees`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' },
         body: JSON.stringify(newEmployee),
@@ -85,7 +86,7 @@ const HrDashboard = () => {
   const removeEmployee = async (id) => {
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch(`/api/employees/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/employees/${id}`, {
         method: 'DELETE',
         headers: { Authorization: token ? `Bearer ${token}` : '' },
       })

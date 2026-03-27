@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { API_BASE_URL } from '../config/api'
 import './JobProgress.css'
 
 function decodeToken() {
@@ -26,7 +27,7 @@ const JobProgress = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
   const fetchJobs = async () => {
-    const res = await fetch('/api/jobs', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    const res = await fetch(`${API_BASE_URL}/api/jobs`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
     const json = await res.json()
     if (res.ok) setJobs(json.jobs || [])
     else {
@@ -36,7 +37,7 @@ const JobProgress = () => {
   }
 
   const fetchEmployees = async () => {
-    const res = await fetch('/api/employees', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    const res = await fetch(`${API_BASE_URL}/api/employees`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
     const json = await res.json()
     if (res.ok) setEmployees(json.employees || [])
     else {
@@ -57,7 +58,7 @@ const JobProgress = () => {
     setUpdating(jobId)
     setError('')
     try {
-      const res = await fetch(`/api/jobs/${jobId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${jobId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ progress: Number(progress), status: status || undefined }),
@@ -80,7 +81,7 @@ const JobProgress = () => {
     setSubmitting(true)
     setError('')
     try {
-      const res = await fetch('/api/jobs', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(form),

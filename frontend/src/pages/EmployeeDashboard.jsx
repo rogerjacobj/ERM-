@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import { API_BASE_URL } from '../config/api'
 import './tickets.css'
 import './dashboard.css'
 
@@ -18,13 +19,13 @@ const EmployeeDashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     // Fetch basic employee data
-    fetch('/api/employee-data', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    fetch(`${API_BASE_URL}/api/employee-data`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
       .then((r) => { if (!r.ok) throw new Error(`Status ${r.status}`); return r.json() })
       .then((json) => setData(json.data))
       .catch((err) => setError(err.message))
 
     // Fetch tickets
-    fetch('/api/employee-tickets', { headers: { Authorization: token ? `Bearer ${token}` : '' } })
+    fetch(`${API_BASE_URL}/api/employee-tickets`, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
       .then((r) => { if (!r.ok) throw new Error(`Status ${r.status}`); return r.json() })
       .then((json) => setTickets(json.tickets || []))
       .catch((err) => setError(err.message))
@@ -42,7 +43,7 @@ const EmployeeDashboard = () => {
     setError('')
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch('/api/employee-tickets', {
+      const res = await fetch(`${API_BASE_URL}/api/employee-tickets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' },
         body: JSON.stringify({ title, category, description }),

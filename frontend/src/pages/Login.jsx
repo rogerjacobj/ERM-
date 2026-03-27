@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { API_BASE_URL } from '../config/api'
 import './Login.css'
 
 const Login = () => {
@@ -30,7 +31,7 @@ const Login = () => {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch(`${API_BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role, email, password }),

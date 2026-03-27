@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { API_BASE_URL } from '../config/api'
 import './Attendance.css'
 
 function decodeToken() {
@@ -46,7 +47,7 @@ const Attendance = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
   const fetchToday = async () => {
-    const res = await fetch('/api/attendance/today', {
+    const res = await fetch(`${API_BASE_URL}/api/attendance/today`, {
       headers: { Authorization: token ? `Bearer ${token}` : '' },
     })
     const json = await res.json()
@@ -58,7 +59,7 @@ const Attendance = () => {
   }
 
   const fetchRecords = async () => {
-    const url = isHr ? `/api/attendance/all${employeeFilter ? `?employeeEmail=${encodeURIComponent(employeeFilter)}` : ''}` : '/api/attendance'
+    const url = isHr ? `${API_BASE_URL}/api/attendance/all${employeeFilter ? `?employeeEmail=${encodeURIComponent(employeeFilter)}` : ''}` : `${API_BASE_URL}/api/attendance`
     const res = await fetch(url, { headers: { Authorization: token ? `Bearer ${token}` : '' } })
     const json = await res.json()
     if (res.ok) setRecords(json.attendance || [])
@@ -86,7 +87,7 @@ const Attendance = () => {
     setError('')
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch('/api/attendance/clock-in', { method: 'POST', headers: { Authorization: `Bearer ${token}` } })
+      const res = await fetch(`${API_BASE_URL}/api/attendance/clock-in`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } })
       const json = await res.json()
       if (!res.ok) throw new Error(json.message || 'Failed')
       setToday(json.attendance)
@@ -102,7 +103,7 @@ const Attendance = () => {
     setActionLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/attendance/clock-out', {
+      const res = await fetch(`${API_BASE_URL}/api/attendance/clock-out`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ notes: clockOutNotes }),
