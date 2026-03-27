@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { motion, AnimatePresence } from 'framer-motion'
 import './events.css'
 
 function formatDate(iso) {
@@ -32,11 +33,26 @@ const Events = () => {
     setRsvps(prev => ({ ...prev, [id]: !prev[id] }))
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 15 } }
+  }
+
   return (
     <div className="events-root">
       <header><Navbar /></header>
       <main className="events-main">
-        <section className="events-hero">
+        <motion.section 
+          className="events-hero"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <div>
             <h1>Company Events</h1>
             <p className="events-lead">Stay connected — join company activities, learning sessions, and social gatherings.</p>
@@ -50,38 +66,60 @@ const Events = () => {
               onChange={e => setQuery(e.target.value)}
             />
           </div>
-        </section>
+        </motion.section>
 
-        <section className="events-grid">
-          {filtered.length === 0 && (
-            <div className="events-empty">No events found.</div>
-          )}
+        <motion.section 
+          className="events-grid"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <AnimatePresence>
+            {filtered.length === 0 && (
+              <motion.div 
+                className="events-empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                No events found.
+              </motion.div>
+            )}
 
-          {filtered.map(ev => (
-            <article key={ev.id} className="event-card">
-              <div className="event-date-block">
-                <strong>{new Date(ev.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong>
-                <span className="event-time">{new Date(ev.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-              </div>
-              <div className="event-body">
-                <h3 className="event-title">{ev.title}</h3>
-                <div className="event-meta">{ev.location} • {formatDate(ev.date)}</div>
-                <p className="event-desc">{ev.description}</p>
-                <div className="event-actions">
-                  <button
-                    className={`event-btn ${rsvps[ev.id] ? 'event-btn-ghost' : 'event-btn-primary'}`}
-                    onClick={() => toggleRsvp(ev.id)}
-                  >
-                    {rsvps[ev.id] ? 'Cancel RSVP' : 'RSVP'}
-                  </button>
-                  <button className="event-btn event-btn-outline" onClick={(e) => e.preventDefault()}>
-                    Add to calendar
-                  </button>
+            {filtered.map(ev => (
+              <motion.article 
+                key={ev.id} 
+                className="event-card glass-panel"
+                variants={itemVariants}
+                layout
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+              >
+                <div className="event-date-block">
+                  <strong>{new Date(ev.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong>
+                  <span className="event-time">{new Date(ev.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
-              </div>
-            </article>
-          ))}
-        </section>
+                <div className="event-body">
+                  <h3 className="event-title">{ev.title}</h3>
+                  <div className="event-meta">{ev.location} • {formatDate(ev.date)}</div>
+                  <p className="event-desc">{ev.description}</p>
+                  <div className="event-actions">
+                    <button
+                      className={`event-btn ${rsvps[ev.id] ? 'event-btn-ghost' : 'event-btn-primary'}`}
+                      onClick={() => toggleRsvp(ev.id)}
+                    >
+                      {rsvps[ev.id] ? 'Cancel RSVP' : 'RSVP'}
+                    </button>
+                    <button className="event-btn event-btn-outline" onClick={(e) => e.preventDefault()}>
+                      Add to calendar
+                    </button>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.section>
       </main>
       <footer><Footer /></footer>
     </div>

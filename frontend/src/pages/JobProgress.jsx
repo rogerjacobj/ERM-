@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { API_BASE_URL } from '../config/api'
+import { motion, AnimatePresence } from 'framer-motion'
 import './JobProgress.css'
 
 function decodeToken() {
@@ -100,6 +101,16 @@ const JobProgress = () => {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    show: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 60, damping: 15 } }
+  }
+
   if (!token) return null
   if (!user) return null
   if (loading) {
@@ -114,11 +125,20 @@ const JobProgress = () => {
   return (
     <div className="jobprogress-root">
       <Navbar />
-      <main className="jobprogress-main">
+      <motion.main 
+        className="jobprogress-main"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <h1>Job Progress Tracker</h1>
 
         {isHr && (
-          <section className="jobprogress-create">
+          <motion.section 
+            className="jobprogress-create glass-panel"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+          >
             <h2>Assign new job</h2>
             <form onSubmit={createJob} className="jobprogress-form">
               <div className="jobprogress-form-row">
@@ -151,7 +171,7 @@ const JobProgress = () => {
                 {submitting ? 'Creating…' : 'Create job'}
               </button>
             </form>
-          </section>
+          </motion.section>
         )}
 
         {error && <div className="jobprogress-error">{error}</div>}
@@ -161,71 +181,91 @@ const JobProgress = () => {
           {jobs.length === 0 ? (
             <p className="jobprogress-empty">No jobs yet</p>
           ) : (
-            <div className="jobprogress-cards">
-              {jobs.map((job) => (
-                <div key={job.id} className="jobprogress-card">
-                  <div className="jobprogress-card-header">
-                    <h3>{job.title}</h3>
-                    {isHr && <span className="jobprogress-assignee">{job.assigneeEmail}</span>}
-                  </div>
-                  {job.description && <p className="jobprogress-desc">{job.description}</p>}
-                  <div className="jobprogress-meta">
-                    <span className={`jobprogress-badge ${job.status}`}>{job.status}</span>
-                    <span className="jobprogress-date">
-                      {new Date(job.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-
-                  <div className="jobprogress-progressbar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={job.progress || 0}>
-                    <div className="jobprogress-progressbar-fill" style={{ width: `${job.progress || 0}%` }} />
-                  </div>
-
-                  <div className="jobprogress-controls">
-                    <label className="jobprogress-slider-wrap">
-                      <span>Progress</span>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={job.progress || 0}
-                        onMouseUp={(e) => {
-                          const v = Number(e.target.value)
-                          const status = v === 100 ? 'completed' : v > 0 ? 'in-progress' : 'pending'
-                          updateProgress(job.id, v, status)
-                        }}
-                        onTouchEnd={(e) => {
-                          const v = Number(e.target.currentTarget.value)
-                          const status = v === 100 ? 'completed' : v > 0 ? 'in-progress' : 'pending'
-                          updateProgress(job.id, v, status)
-                        }}
-                        onChange={(e) => {
-                          const v = Number(e.target.value)
-                          setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, progress: v } : j)))
-                        }}
-                        disabled={updating === job.id}
-                      />
-                      <span>{job.progress || 0}%</span>
-                    </label>
-                    <div className="jobprogress-status-btns">
-                      {['pending', 'in-progress', 'completed'].map((s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          className={`jobprogress-status-btn ${job.status === s ? 'active' : ''}`}
-                          onClick={() => updateProgress(job.id, job.progress, s)}
-                          disabled={updating === job.id}
-                        >
-                          {s}
-                        </button>
-                      ))}
+            <motion.div 
+              className="jobprogress-cards"
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+            >
+              <AnimatePresence>
+                {jobs.map((job) => (
+                  <motion.div 
+                    key={job.id} 
+                    className="jobprogress-card glass-panel"
+                    variants={itemVariants}
+                    layout
+                    initial="hidden"
+                    animate="show"
+                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                  >
+                    <div className="jobprogress-card-header">
+                      <h3>{job.title}</h3>
+                      {isHr && <span className="jobprogress-assignee">{job.assigneeEmail}</span>}
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    {job.description && <p className="jobprogress-desc">{job.description}</p>}
+                    <div className="jobprogress-meta">
+                      <span className={`jobprogress-badge ${job.status}`}>{job.status}</span>
+                      <span className="jobprogress-date">
+                        {new Date(job.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <div className="jobprogress-progressbar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={job.progress || 0}>
+                      <motion.div 
+                        className="jobprogress-progressbar-fill" 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${job.progress || 0}%` }}
+                        transition={{ duration: 0.6, type: "spring" }}
+                      />
+                    </div>
+
+                    <div className="jobprogress-controls">
+                      <label className="jobprogress-slider-wrap">
+                        <span>Progress</span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={job.progress || 0}
+                          onMouseUp={(e) => {
+                            const v = Number(e.target.value)
+                            const status = v === 100 ? 'completed' : v > 0 ? 'in-progress' : 'pending'
+                            updateProgress(job.id, v, status)
+                          }}
+                          onTouchEnd={(e) => {
+                            const v = Number(e.target.currentTarget.value)
+                            const status = v === 100 ? 'completed' : v > 0 ? 'in-progress' : 'pending'
+                            updateProgress(job.id, v, status)
+                          }}
+                          onChange={(e) => {
+                            const v = Number(e.target.value)
+                            setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, progress: v } : j)))
+                          }}
+                          disabled={updating === job.id}
+                        />
+                        <span>{job.progress || 0}%</span>
+                      </label>
+                      <div className="jobprogress-status-btns">
+                        {['pending', 'in-progress', 'completed'].map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            className={`jobprogress-status-btn ${job.status === s ? 'active' : ''}`}
+                            onClick={() => updateProgress(job.id, job.progress, s)}
+                            disabled={updating === job.id}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           )}
         </section>
-      </main>
+      </motion.main>
       <Footer />
     </div>
   )

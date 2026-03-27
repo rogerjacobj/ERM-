@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { API_BASE_URL } from '../config/api'
+import { motion, AnimatePresence } from 'framer-motion'
 import './Attendance.css'
 
 function decodeToken() {
@@ -120,6 +121,16 @@ const Attendance = () => {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 12 } }
+  }
+
   if (!token) return null
   if (!user) return null
   if (loading) {
@@ -134,11 +145,21 @@ const Attendance = () => {
   return (
     <div className="attendance-root">
       <Navbar />
-      <main className="attendance-main">
+      <motion.main 
+        className="attendance-main"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <h1>Attendance</h1>
 
         {!isHr && (
-          <section className="attendance-today">
+          <motion.section 
+            className="attendance-today glass-panel"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 50, damping: 15 }}
+          >
             <h2>Today</h2>
             <div className="attendance-actions">
               {!today?.checkIn ? (
@@ -173,7 +194,7 @@ const Attendance = () => {
                 <span>Worked: {formatDuration(today.checkIn, today.checkOut)}</span>
               </div>
             )}
-          </section>
+          </motion.section>
         )}
 
         {isHr && (
@@ -189,7 +210,13 @@ const Attendance = () => {
 
         {error && <div className="attendance-error">{error}</div>}
 
-        <section className="attendance-history">
+        <motion.section 
+          className="attendance-history glass-panel"
+          style={{ marginTop: '2rem' }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           <h2>{isHr ? 'All attendance' : 'History'}</h2>
           {records.length === 0 ? (
             <p className="attendance-empty">No records yet</p>
@@ -207,26 +234,32 @@ const Attendance = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {records.map((r) => (
-                    <tr key={r.id}>
-                      {isHr && <td>{r.employeeEmail}</td>}
-                      <td>{r.date}</td>
-                      <td>{formatTime(r.checkIn)}</td>
-                      <td>{formatTime(r.checkOut)}</td>
-                      <td>{formatDuration(r.checkIn, r.checkOut)}</td>
-                      <td>
-                        <span className={`att-badge ${r.checkOut ? 'complete' : 'active'}`}>
-                          {r.checkOut ? 'Complete' : 'Active'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  <AnimatePresence>
+                    {records.map((r) => (
+                      <motion.tr 
+                        key={r.id}
+                        variants={itemVariants}
+                        layout
+                      >
+                        {isHr && <td>{r.employeeEmail}</td>}
+                        <td>{r.date}</td>
+                        <td>{formatTime(r.checkIn)}</td>
+                        <td>{formatTime(r.checkOut)}</td>
+                        <td>{formatDuration(r.checkIn, r.checkOut)}</td>
+                        <td>
+                          <span className={`att-badge ${r.checkOut ? 'complete' : 'active'}`}>
+                            {r.checkOut ? 'Complete' : 'Active'}
+                          </span>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </AnimatePresence>
                 </tbody>
               </table>
             </div>
           )}
-        </section>
-      </main>
+        </motion.section>
+      </motion.main>
       <Footer />
     </div>
   )

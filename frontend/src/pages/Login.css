@@ -78,18 +78,6 @@
   text-align: center;
 }
 
-.login-hint {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  margin: 0 0 2rem;
-  line-height: 1.6;
-  text-align: center;
-  background: rgba(59, 130, 246, 0.05);
-  padding: 0.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--color-primary);
-}
-
 .role-toggle {
   display: flex;
   background: rgba(15, 23, 42, 0.05);

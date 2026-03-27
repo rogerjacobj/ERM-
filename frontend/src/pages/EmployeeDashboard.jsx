@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { API_BASE_URL } from '../config/api'
+import { motion, AnimatePresence } from 'framer-motion'
 import './tickets.css'
 import './dashboard.css'
 
@@ -52,9 +53,8 @@ const EmployeeDashboard = () => {
         const d = await res.json().catch(()=>({}));
         throw new Error(d.message || `Status ${res.status}`)
       }
-  const json = await res.json()
-  // add a transient flag for a tiny highlight animation
-  setTickets((t) => [{ ...json.ticket, _transient: 'new' }, ...t])
+      const json = await res.json()
+      setTickets((t) => [{ ...json.ticket, _transient: 'new' }, ...t])
       setTitle('')
       setCategory('general')
       setDescription('')
@@ -65,10 +65,27 @@ const EmployeeDashboard = () => {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 12 } }
+  }
+
+  const filteredTickets = tickets.filter(t => filter === 'all' ? true : t.status === filter)
+
   return (
     <div className="dashboard-root">
       <Navbar />
-      <main className="page-container">
+      <motion.main 
+        className="page-container"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="header-row">
           <h1>Employee Dashboard</h1>
           <button className="dash-btn-logout" onClick={logout}>Logout</button>
@@ -76,27 +93,27 @@ const EmployeeDashboard = () => {
 
         {error && <div className="dash-error" role="alert">{error}</div>}
 
-        <div className="stats-grid">
-          <div className="card">
+        <motion.div className="stats-grid" variants={containerVariants} initial="hidden" animate="show">
+          <motion.div variants={itemVariants} className="card glass-panel">
             <h3>Welcome</h3>
             <div className="stat">{data ? data.welcome : '—'}</div>
             <div className="small">User info</div>
-          </div>
-          <div className="card">
+          </motion.div>
+          <motion.div variants={itemVariants} className="card glass-panel">
             <h3>Open Tasks</h3>
             <div className="stat">{data ? data.tasks.length : 0}</div>
             <div className="small">Tasks assigned</div>
-          </div>
-          <div className="card">
+          </motion.div>
+          <motion.div variants={itemVariants} className="card glass-panel">
             <h3>Announcements</h3>
             <div className="stat">{data ? data.announcements.length : 0}</div>
             <div className="small">Company news</div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="main-grid">
+        <motion.div className="main-grid" variants={containerVariants} initial="hidden" animate="show">
           <div>
-            <div className="card">
+            <motion.div variants={itemVariants} className="card glass-panel">
               <h3>Create complaint ticket</h3>
               <form className="ticket-form" onSubmit={submitTicket}>
                 <div className="form-row">
@@ -115,9 +132,9 @@ const EmployeeDashboard = () => {
                   <button type="submit" className="dash-submit" disabled={submitting}>{submitting ? 'Submitting…' : 'Create ticket'}</button>
                 </div>
               </form>
-            </div>
+            </motion.div>
 
-            <div className="card" style={{ marginTop: '1rem' }}>
+            <motion.div variants={itemVariants} className="card glass-panel" style={{ marginTop: '1rem' }}>
               <h3>Your complaint tickets</h3>
               <div className="small">Filter and track status of your tickets</div>
               <div style={{ marginTop: 8 }} className="filters">
@@ -131,31 +148,45 @@ const EmployeeDashboard = () => {
               </div>
 
               <div className="ticket-list" style={{ marginTop: '0.75rem' }}>
-                {tickets.filter(t => filter === 'all' ? true : t.status === filter).length === 0 && <div className="small">No tickets</div>}
-                {tickets.filter(t => filter === 'all' ? true : t.status === filter).map(t => (
-                  <div key={t.id} className={`ticket ${t._transient === 'new' ? 'new' : ''}`}>
-                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <div className="title">{t.title} <span className="small">({t.category})</span></div>
-                      <div>
-                        <span className={`badge ${t.status.replace(/\s+/g,'-')}`}>{t.status}</span>
+                <AnimatePresence>
+                  {filteredTickets.length === 0 && (
+                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="small">
+                       No tickets
+                     </motion.div>
+                  )}
+                  {filteredTickets.map(t => (
+                    <motion.div 
+                      key={t.id} 
+                      layout
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className={`ticket ${t._transient === 'new' ? 'new' : ''}`}
+                    >
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                        <div className="title">{t.title} <span className="small">({t.category})</span></div>
+                        <div>
+                          <span className={`badge ${t.status.replace(/\s+/g,'-')}`}>{t.status}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="meta">{new Date(t.createdAt).toLocaleString()}</div>
-                    <div className="desc">{t.description}</div>
-                  </div>
-                ))}
+                      <div className="meta">{new Date(t.createdAt).toLocaleString()}</div>
+                      <div className="desc">{t.description}</div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           <aside>
-            <div className="card">
+            <motion.div variants={itemVariants} className="card glass-panel">
               <h3>Quick Actions</h3>
               <div className="small">You can create tickets and track their status here.</div>
-            </div>
+            </motion.div>
           </aside>
-        </div>
-      </main>
+        </motion.div>
+      </motion.main>
     </div>
   )
 }

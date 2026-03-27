@@ -10,10 +10,12 @@ import HrDashboard from './pages/HrDashboard'
 import Events from './pages/Events'
 import Attendance from './pages/Attendance'
 import JobProgress from './pages/JobProgress'
+import SmoothCursor from './components/SmoothCursor'
 
 const App = () => {
   return (
     <ThemeProvider>
+      <SmoothCursor />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

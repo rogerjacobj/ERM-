@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { API_BASE_URL } from '../config/api'
+import { motion, AnimatePresence } from 'framer-motion'
 import './tickets.css'
 import './dashboard.css'
 
@@ -97,10 +98,25 @@ const HrDashboard = () => {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 12 } }
+  }
+
   return (
     <div className="dashboard-root">
       <Navbar />
-      <main className="page-container">
+      <motion.main 
+        className="page-container"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="header-row">
           <h1>HR Dashboard</h1>
           <button className="dash-btn-logout" onClick={logout}>Logout</button>
@@ -109,37 +125,46 @@ const HrDashboard = () => {
         {loading && <div className="dash-loading">Loading…</div>}
         {error && <div className="dash-error" role="alert">{error}</div>}
 
-        <div className="main-grid">
+        <motion.div className="main-grid" variants={containerVariants} initial="hidden" animate="show">
           <div>
-            <div className="card">
+            <motion.div variants={itemVariants} className="card glass-panel">
               <h3>All complaint tickets</h3>
               {Object.keys(ticketsByUser).length === 0 && <div className="small">No tickets</div>}
               {Object.entries(ticketsByUser).map(([user, list]) => (
                 <div key={user} className="user-block">
                   <h4>{user}</h4>
                   <div className="ticket-list">
-                    {list.map(t => (
-                          <div key={t.id} className={`ticket ${t._transient === 'updated' ? 'updated' : ''}`}>
-                            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                              <div className="title">{t.title} <span className="small">({t.category})</span></div>
-                              <div><span className={`badge ${t.status.replace(/\s+/g,'-')}`}>{t.status}</span></div>
-                            </div>
-                            <div className="meta">{t.status} — {new Date(t.createdAt).toLocaleString()}</div>
-                            <div className="desc">{t.description}</div>
-                            <div className="controls">
-                              <button className="icon-btn primary" onClick={()=>updateStatus(t.id,'in-progress')}>In Progress</button>
-                              <button className="icon-btn" onClick={()=>updateStatus(t.id,'resolved')}>Resolve</button>
-                            </div>
+                    <AnimatePresence>
+                      {list.map(t => (
+                        <motion.div 
+                          key={t.id} 
+                          layout
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className={`ticket ${t._transient === 'updated' ? 'updated' : ''}`}
+                        >
+                          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                            <div className="title">{t.title} <span className="small">({t.category})</span></div>
+                            <div><span className={`badge ${t.status.replace(/\s+/g,'-')}`}>{t.status}</span></div>
                           </div>
-                    ))}
+                          <div className="meta">{t.status} — {new Date(t.createdAt).toLocaleString()}</div>
+                          <div className="desc">{t.description}</div>
+                          <div className="controls">
+                            <button className="icon-btn primary" onClick={()=>updateStatus(t.id,'in-progress')}>In Progress</button>
+                            <button className="icon-btn" onClick={()=>updateStatus(t.id,'resolved')}>Resolve</button>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           <aside>
-            <div className="card">
+            <motion.div variants={itemVariants} className="card glass-panel">
               <h3>Employee Management</h3>
               <form onSubmit={addEmployee} className="employee-form">
                 <div className="form-row">
@@ -182,26 +207,36 @@ const HrDashboard = () => {
 
               <div className="employee-section">
                 <h4>Current Employees</h4>
-                <div className="employee-list">
-                  {employees.map(emp => (
-                    <div key={emp.id} className={`employee-card ${emp._transient === 'new' ? 'new' : ''}`}>
-                      <div className="employee-info">
-                        <div className="name">{emp.name}</div>
-                        <div className="small">{emp.email}</div>
-                        <div className="meta">
-                          <span className="badge">{emp.role}</span>
-                          {emp.department && <span className="small"> • {emp.department}</span>}
+                <motion.div className="employee-list" variants={containerVariants} initial="hidden" animate="show">
+                  <AnimatePresence>
+                    {employees.map(emp => (
+                      <motion.div 
+                        key={emp.id} 
+                        layout
+                        variants={itemVariants}
+                        initial="hidden"
+                        animate="show"
+                        exit={{ opacity: 0, x: -20 }}
+                        className={`employee-card ${emp._transient === 'new' ? 'new' : ''}`}
+                      >
+                        <div className="employee-info">
+                          <div className="name">{emp.name}</div>
+                          <div className="small">{emp.email}</div>
+                          <div className="meta">
+                            <span className="badge">{emp.role}</span>
+                            {emp.department && <span className="small"> • {emp.department}</span>}
+                          </div>
                         </div>
-                      </div>
-                      <button onClick={() => removeEmployee(emp.id)} className="icon-btn danger">Remove</button>
-                    </div>
-                  ))}
-                </div>
+                        <button onClick={() => removeEmployee(emp.id)} className="icon-btn danger">Remove</button>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </aside>
-        </div>
-      </main>
+        </motion.div>
+      </motion.main>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { API_BASE_URL } from '../config/api'
+import { motion, AnimatePresence } from 'framer-motion'
 import './Login.css'
 
 const Login = () => {
@@ -54,18 +55,36 @@ const Login = () => {
     }
   }
 
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95, y: 20 },
+    show: { 
+      opacity: 1, scale: 1, y: 0, 
+      transition: { 
+        type: "spring", stiffness: 50, damping: 15, duration: 0.6,
+        staggerChildren: 0.1, delayChildren: 0.1 
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60 } }
+  }
+
   return (
     <div className="login-root">
       <Navbar />
       <main className="login-main">
-        <div className="login-card animate-scale-in">
-          <h1 className="login-title animate-fade-up">Sign in</h1>
-          <p className="login-subtitle animate-fade-up delay-100">Access for employees and HR</p>
-          <p className="login-hint animate-fade-up delay-200">
-            Test: password <strong>password123</strong>. Use any email. Toggle role to test HR vs Employee.
-          </p>
+        <motion.div 
+          className="login-card glass-panel"
+          variants={cardVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.h1 variants={itemVariants} className="login-title">Sign in</motion.h1>
+          <motion.p variants={itemVariants} className="login-subtitle">Access for employees and HR</motion.p>
 
-          <div className="role-toggle animate-fade-up delay-300" role="tablist" aria-label="Select role">
+          <motion.div variants={itemVariants} className="role-toggle" role="tablist" aria-label="Select role">
             <button
               type="button"
               aria-pressed={role === 'employee'}
@@ -82,9 +101,9 @@ const Login = () => {
             >
               HR
             </button>
-          </div>
+          </motion.div>
 
-          <form className="login-form animate-fade-up delay-400" onSubmit={handleSubmit} noValidate>
+          <motion.form variants={itemVariants} className="login-form" onSubmit={handleSubmit} noValidate>
             <label className="login-field">
               <span className="login-label">Email</span>
               <input
@@ -111,19 +130,29 @@ const Login = () => {
               />
             </label>
 
-            {error && (
-              <div className="login-error" role="alert">{error}</div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: 'auto' }} 
+                  exit={{ opacity: 0, height: 0 }} 
+                  className="login-error overflow-hidden" 
+                  role="alert"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <button className="login-submit" type="submit" disabled={loading}>
               {loading ? 'Signing in…' : `Sign in as ${role === 'hr' ? 'HR' : 'Employee'}`}
             </button>
-          </form>
+          </motion.form>
 
-          <p className="login-footer animate-fade-up delay-500">
+          <motion.p variants={itemVariants} className="login-footer">
             Don't have an account? Contact HR to create one.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </main>
     </div>
   )

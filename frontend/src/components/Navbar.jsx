@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import './Navbar.css';
 import bell from '../assets/Navbar/Bell_pin_fill.png';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  
   let dashboardTo = '/dashboard';
   if (token) {
     try {
@@ -16,19 +18,37 @@ const Navbar = () => {
     }
   }
 
+  const isHomePage = location.pathname === '/';
+
   const navItems = [
-    { to: '/', label: 'Home' },
+    { to: isHomePage ? '#home' : '/', label: 'Home', isAnchor: isHomePage },
     { to: '/events', label: 'Events' },
     ...(token ? [{ to: '/attendance', label: 'Attendance' }, { to: '/job-progress', label: 'Job Progress' }] : []),
-    { to: '/mission', label: 'Our Mission' },
+    { to: isHomePage ? '#mission' : '/mission', label: 'Our Mission', isAnchor: isHomePage },
     { to: dashboardTo, label: 'Dashboard' },
-    { to: '/blog', label: 'Blog' },
+    { to: isHomePage ? '#blog' : '/blog', label: 'Blog', isAnchor: isHomePage },
   ];
+
+  const handleNavClick = (e, item) => {
+    setOpen(false);
+    if (item.isAnchor) {
+      e.preventDefault();
+      const element = document.querySelector(item.to);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <header className="navbar-header">
       <div className="navbar-inner">
-        <Link to="/" className="navbar-logo">
+        <Link to="/" className="navbar-logo" onClick={(e) => {
+          if (isHomePage) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }}>
           Employee Resources
         </Link>
 
@@ -58,13 +78,23 @@ const Navbar = () => {
           <ul className="navbar-list">
             {navItems.map((item) => (
               <li key={item.to}>
-                <Link
-                  to={item.to}
-                  className="nav-link"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
+                {item.isAnchor ? (
+                  <a
+                    href={item.to}
+                    className="nav-link"
+                    onClick={(e) => handleNavClick(e, item)}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.to}
+                    className="nav-link"
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
