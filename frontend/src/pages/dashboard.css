@@ -163,3 +163,26 @@
   color: var(--color-text);
   margin: 0 0 0.5rem;
 }
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 1.25rem 0.875rem 2rem;
+  }
+
+  .header-row h1 {
+    font-size: 1.25rem;
+  }
+
+  .dash-btn-logout {
+    width: 100%;
+  }
+
+  .main-grid {
+    gap: 1rem;
+  }
+
+  .dash-card,
+  .card {
+    padding: 1rem;
+  }
+}

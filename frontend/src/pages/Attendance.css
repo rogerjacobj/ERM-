@@ -199,3 +199,37 @@
   color: var(--success);
 }
 
+@media (max-width: 640px) {
+  .attendance-main {
+    padding: 1.25rem 0.875rem 2rem;
+  }
+
+  .attendance-main h1 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .attendance-today,
+  .attendance-history {
+    padding: 1rem;
+  }
+
+  .att-btn {
+    width: 100%;
+  }
+
+  .att-today-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .attendance-filter input {
+    max-width: 100%;
+  }
+}

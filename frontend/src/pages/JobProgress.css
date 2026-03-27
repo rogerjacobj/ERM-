@@ -273,3 +273,59 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+@media (max-width: 640px) {
+  .jobprogress-main {
+    padding: 1.25rem 0.875rem 2rem;
+  }
+
+  .jobprogress-main h1 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .jobprogress-create,
+  .jobprogress-list,
+  .jobprogress-card {
+    padding: 1rem;
+  }
+
+  .jobprogress-submit {
+    width: 100%;
+    justify-content: center;
+    display: inline-flex;
+  }
+
+  .jobprogress-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .jobprogress-meta {
+    flex-wrap: wrap;
+  }
+
+  .jobprogress-slider-wrap {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .jobprogress-slider-wrap span:first-child,
+  .jobprogress-slider-wrap span:last-child {
+    min-width: auto;
+  }
+
+  .jobprogress-slider-wrap input[type="range"] {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .jobprogress-status-btns {
+    width: 100%;
+  }
+
+  .jobprogress-status-btn {
+    flex: 1;
+    text-align: center;
+  }
+}

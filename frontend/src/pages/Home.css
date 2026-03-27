@@ -120,10 +120,25 @@
   .home-hero {
     flex-direction: column;
     text-align: center;
+    padding: 1.5rem 1rem 2.5rem;
+    gap: 1.5rem;
   }
 
   .home-hero-content {
     max-width: 100%;
+  }
+
+  .home-heading {
+    font-size: 1.8rem;
+  }
+
+  .home-heading-accent {
+    font-size: 1.6rem;
+  }
+
+  .home-quote {
+    font-size: 1rem;
+    margin-bottom: 1.4rem;
   }
 
   .home-cta {
@@ -132,5 +147,11 @@
 
   .home-hero-img {
     max-width: 280px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    justify-content: center;
   }
 }
