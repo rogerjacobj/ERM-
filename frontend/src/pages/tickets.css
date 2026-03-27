@@ -1,0 +1,233 @@
+/* Ticket styles - theme-aware */
+.ticket-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.65rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.ticket-form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ticket {
+  padding: 1rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s;
+}
+
+.ticket:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.ticket .title {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.ticket .meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.ticket .desc {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.ticket .controls {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.badge.open {
+  background: rgba(79, 70, 229, 0.12);
+  color: var(--accent);
+}
+
+.badge.in-progress {
+  background: rgba(8, 145, 178, 0.12);
+  color: var(--accent-2);
+}
+
+.badge.resolved {
+  background: rgba(5, 150, 105, 0.12);
+  color: var(--success);
+}
+
+/* Buttons */
+.icon-btn {
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.icon-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.icon-btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none;
+  color: white;
+}
+
+.icon-btn.primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.icon-btn.danger {
+  border-color: rgba(220, 38, 38, 0.4);
+  color: var(--danger);
+}
+
+.icon-btn.danger:hover {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.dash-submit {
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.dash-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.dash-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filters select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+/* Employee list */
+.employee-section {
+  margin-top: 1.25rem;
+}
+
+.employee-section h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.employee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.employee-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s;
+}
+
+.employee-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.employee-info {
+  flex: 1;
+}
+
+.employee-info .name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.employee-info .meta {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Animations */
+.ticket.new {
+  animation: ticket-flash 1.5s ease;
+}
+
+.ticket.updated {
+  animation: ticket-update 1.4s ease;
+}
+
+.employee-card.new {
+  animation: ticket-flash 1.5s ease;
+}
+
+@keyframes ticket-flash {
+  0% { box-shadow: 0 0 0 rgba(79, 70, 229, 0.2); }
+  15% { box-shadow: 0 4px 20px rgba(79, 70, 229, 0.25); }
+  100% { box-shadow: var(--shadow-sm); }
+}
+
+@keyframes ticket-update {
+  0% { box-shadow: 0 0 0 rgba(8, 145, 178, 0.2); }
+  15% { box-shadow: 0 4px 20px rgba(8, 145, 178, 0.25); }
+  100% { box-shadow: var(--shadow-sm); }
+}

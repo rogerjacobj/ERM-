@@ -1,0 +1,58 @@
+.mission-page {
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.mission-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.mission-hero h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
+}
+
+.mission-lead {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+.mission-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mission-card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+
+.mission-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.mission-card h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem;
+}
+
+.mission-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}

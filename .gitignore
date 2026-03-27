@@ -1,0 +1,26 @@
+﻿
+
+# If you want to keep certain files or folders, you can whitelist them like this:
+# !/backend/keepme.txt
+# !/frontend/src/
+
+# Node.js related (if using Node/React)
+node_modules/
+/package-lock.json
+.env
+dist/
+build/
+*.log
+
+# Python related (if using Python backend)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

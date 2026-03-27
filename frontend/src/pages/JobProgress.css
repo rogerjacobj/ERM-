@@ -1,0 +1,275 @@
+.jobprogress-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.jobprogress-main {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  width: 100%;
+}
+
+.jobprogress-main h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 1.5rem;
+}
+
+.jobprogress-main h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: 0 0 1rem;
+}
+
+.jobprogress-loading {
+  color: var(--color-text-muted);
+}
+
+.jobprogress-create {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.jobprogress-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.jobprogress-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.jobprogress-form-row input,
+.jobprogress-form-row select,
+.jobprogress-form-row textarea {
+  padding: 0.6rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 600px) {
+  .jobprogress-form-row {
+    flex-direction: row;
+  }
+  .jobprogress-form-row input,
+  .jobprogress-form-row select {
+    flex: 1;
+  }
+}
+
+.jobprogress-submit {
+  align-self: flex-start;
+  padding: 0.6rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.jobprogress-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.jobprogress-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.jobprogress-error {
+  padding: 0.75rem 1rem;
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+}
+
+.jobprogress-list {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.jobprogress-empty {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.jobprogress-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.jobprogress-card {
+  padding: 1.25rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s;
+}
+
+.jobprogress-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.jobprogress-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.jobprogress-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 0.25rem;
+}
+
+.jobprogress-assignee {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.jobprogress-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.jobprogress-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.jobprogress-progressbar {
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.jobprogress-progressbar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 9999px;
+  transition: width 0.25s ease;
+}
+
+.jobprogress-badge {
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.jobprogress-badge.pending {
+  background: rgba(107, 114, 128, 0.15);
+  color: var(--color-text-muted);
+}
+
+.jobprogress-badge.in-progress {
+  background: rgba(8, 145, 178, 0.15);
+  color: var(--accent-2);
+}
+
+.jobprogress-badge.completed {
+  background: rgba(5, 150, 105, 0.15);
+  color: var(--success);
+}
+
+.jobprogress-date {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.jobprogress-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.jobprogress-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.jobprogress-slider-wrap span:first-child {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  min-width: 60px;
+}
+
+.jobprogress-slider-wrap input[type="range"] {
+  flex: 1;
+  height: 6px;
+  accent-color: var(--accent);
+}
+
+.jobprogress-slider-wrap span:last-child {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 40px;
+}
+
+.jobprogress-status-btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.jobprogress-status-btn {
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jobprogress-status-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.jobprogress-status-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.jobprogress-status-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
