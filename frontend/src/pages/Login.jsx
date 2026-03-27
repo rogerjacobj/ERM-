@@ -58,14 +58,14 @@ const Login = () => {
     <div className="login-root">
       <Navbar />
       <main className="login-main">
-        <div className="login-card">
-          <h1 className="login-title">Sign in</h1>
-          <p className="login-subtitle">Access for employees and HR</p>
-          <p className="login-hint">
+        <div className="login-card animate-scale-in">
+          <h1 className="login-title animate-fade-up">Sign in</h1>
+          <p className="login-subtitle animate-fade-up delay-100">Access for employees and HR</p>
+          <p className="login-hint animate-fade-up delay-200">
             Test: password <strong>password123</strong>. Use any email. Toggle role to test HR vs Employee.
           </p>
 
-          <div className="role-toggle" role="tablist" aria-label="Select role">
+          <div className="role-toggle animate-fade-up delay-300" role="tablist" aria-label="Select role">
             <button
               type="button"
               aria-pressed={role === 'employee'}
@@ -84,7 +84,7 @@ const Login = () => {
             </button>
           </div>
 
-          <form className="login-form" onSubmit={handleSubmit} noValidate>
+          <form className="login-form animate-fade-up delay-400" onSubmit={handleSubmit} noValidate>
             <label className="login-field">
               <span className="login-label">Email</span>
               <input
@@ -120,7 +120,7 @@ const Login = () => {
             </button>
           </form>
 
-          <p className="login-footer">
+          <p className="login-footer animate-fade-up delay-500">
             Don't have an account? Contact HR to create one.
           </p>
         </div>
