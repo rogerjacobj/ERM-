@@ -12,9 +12,9 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to the backend during development
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://erm-3.onrender.com',
         changeOrigin: true,
-        secure: false,
+        secure: true,
       }
     }
   }
