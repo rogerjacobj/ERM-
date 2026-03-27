@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import { Link } from 'react-router-dom'
-import './Dashboard.css'
+import "./dashboard.css"
 
 function decodeToken(token) {
   try {
