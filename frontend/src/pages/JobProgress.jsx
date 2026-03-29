@@ -131,7 +131,7 @@ const JobProgress = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h1>Job Progress Tracker</h1>
+        <h1>📊 Job Progress Tracker</h1>
 
         {isHr && (
           <motion.section 

@@ -1,18 +1,14 @@
 import Bros from '../assets/Hero/Handshake_Light.png'
-import TalkingImage from '../assets/Hero/Talking.png'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import MorphingText from '../components/MorphingText'
 import { Link } from 'react-router-dom'
-import { useTheme } from '../context/ThemeContext'
 import { motion } from 'framer-motion'
 import './Home.css'
 import './Mission.css'
 import './Blog.css'
 
 const Home = () => {
-  const { isDark } = useTheme()
-
   const morphTexts = [
     "Communication",
     "Collaboration",
@@ -62,7 +58,7 @@ const Home = () => {
           animate="show"
         >
           <motion.p variants={itemVariants} className="home-tagline">
-            Bridge the gap between employees and HR
+            ✦ Bridge the gap between employees and HR
           </motion.p>
 
           <motion.h1 variants={itemVariants} className="home-heading">
@@ -74,13 +70,13 @@ const Home = () => {
           </motion.div>
 
           <motion.p variants={itemVariants} className="home-quote">
-            A small act of <span className="text-primary">improvement</span> is a big{' '}
-            <span className="text-primary">difference</span> in someone's work life. Let's make it happen.
+            A small act of <span className="text-highlight">improvement</span> is a big{' '}
+            <span className="text-highlight">difference</span> in someone's work life. Let's make it happen.
           </motion.p>
 
           <motion.div variants={itemVariants} className="home-cta">
-            <Link to="/events" className="btn-primary">View Events</Link>
-            <Link to="/login" className="btn-outline">Sign in</Link>
+            <Link to="/events" className="btn-primary">🎉 View Events</Link>
+            <Link to="/login" className="btn-outline">✦ Sign in</Link>
           </motion.div>
         </motion.div>
 
@@ -91,10 +87,9 @@ const Home = () => {
           transition={{ duration: 0.8, delay: 0.4, type: "spring" }}
         >
           <img
-            key={isDark ? 'dark' : 'light'}
-            src={isDark ? TalkingImage : Bros}
-            alt={isDark ? 'People in conversation' : 'Professional handshake'}
-            className={`home-hero-img ${isDark ? 'dark' : ''}`}
+            src={Bros}
+            alt="Professional handshake"
+            className="home-hero-img"
           />
         </motion.div>
       </section>
@@ -109,41 +104,41 @@ const Home = () => {
         variants={sectionVariants}
       >
         <div className="mission-hero text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">Our Mission</h2>
-          <p className="mission-lead text-xl opacity-80 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4">🚀 Our Mission</h2>
+          <p className="mission-lead text-xl max-w-2xl mx-auto">
             Empowering meaningful communication between employees and HR
           </p>
         </div>
         
         <div className="mission-content grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
           <motion.div 
-            className="mission-card glass-panel p-8"
-            whileHover={{ y: -10 }}
+            className="mission-card neo-card neo-card-yellow p-8"
+            whileHover={{ y: -8, rotate: -1 }}
           >
-            <h3 className="text-2xl font-bold mb-4">Bridge the gap</h3>
-            <p className="opacity-80">
+            <h3 className="text-2xl font-bold mb-4">🤝 Bridge the gap</h3>
+            <p>
               We believe every voice matters. Our platform creates a direct channel for 
               workplace conversations—from feedback and concerns to celebrations and ideas.
             </p>
           </motion.div>
           
           <motion.div 
-            className="mission-card glass-panel p-8"
-            whileHover={{ y: -10 }}
+            className="mission-card neo-card neo-card-mint p-8"
+            whileHover={{ y: -8, rotate: 1 }}
           >
-            <h3 className="text-2xl font-bold mb-4">Transparency & trust</h3>
-            <p className="opacity-80">
+            <h3 className="text-2xl font-bold mb-4">🔒 Transparency & trust</h3>
+            <p>
               Building trust through clear processes. Employees can submit tickets, 
               track resolutions, and HR can respond quickly and consistently.
             </p>
           </motion.div>
           
           <motion.div 
-            className="mission-card glass-panel p-8"
-            whileHover={{ y: -10 }}
+            className="mission-card neo-card neo-card-pink p-8"
+            whileHover={{ y: -8, rotate: -1 }}
           >
-            <h3 className="text-2xl font-bold mb-4">One platform, all needs</h3>
-            <p className="opacity-80">
+            <h3 className="text-2xl font-bold mb-4">🎯 One platform, all needs</h3>
+            <p>
               Events, ticketing, announcements, and dashboards—everything your team 
               needs to stay connected and productive in one place.
             </p>
@@ -161,20 +156,20 @@ const Home = () => {
         variants={sectionVariants}
       >
         <div className="blog-hero text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">Latest Updates</h2>
-          <p className="blog-lead text-xl opacity-80">News, tips, and insights from our team</p>
+          <h2 className="text-4xl font-bold mb-4">📰 Latest Updates</h2>
+          <p className="blog-lead text-xl">News, tips, and insights from our team</p>
         </div>
 
         <div className="blog-grid grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
-          {blogPosts.map((post) => (
+          {blogPosts.map((post, index) => (
             <motion.article 
               key={post.id} 
-              className="blog-card glass-panel p-6"
-              whileHover={{ scale: 1.02 }}
+              className={`blog-card neo-card ${index === 0 ? 'neo-card-lavender' : index === 1 ? 'neo-card-mint' : 'neo-card-orange'} p-6`}
+              whileHover={{ scale: 1.03, rotate: index % 2 === 0 ? -1 : 1 }}
             >
-              <time className="blog-date text-sm opacity-60 mb-2 block">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+              <time className="blog-date text-sm mb-2 block">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
               <h3 className="blog-title text-xl font-bold mb-3">{post.title}</h3>
-              <p className="blog-excerpt opacity-80 text-sm line-clamp-3">{post.excerpt}</p>
+              <p className="blog-excerpt text-sm line-clamp-3">{post.excerpt}</p>
             </motion.article>
           ))}
         </div>

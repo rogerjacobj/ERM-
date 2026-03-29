@@ -54,7 +54,7 @@ const Events = () => {
           transition={{ duration: 0.5 }}
         >
           <div>
-            <h1>Company Events</h1>
+            <h1>🎉 Company Events</h1>
             <p className="events-lead">Stay connected — join company activities, learning sessions, and social gatherings.</p>
           </div>
           <div className="events-search-wrap">

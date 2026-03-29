@@ -118,8 +118,8 @@ const HrDashboard = () => {
         transition={{ duration: 0.4 }}
       >
         <div className="header-row">
-          <h1>HR Dashboard</h1>
-          <button className="dash-btn-logout" onClick={logout}>Logout</button>
+          <h1>👔 HR Dashboard</h1>
+          <button className="dash-btn-logout" onClick={logout}>🚪 Logout</button>
         </div>
 
         {loading && <div className="dash-loading">Loading…</div>}
@@ -127,8 +127,8 @@ const HrDashboard = () => {
 
         <motion.div className="main-grid" variants={containerVariants} initial="hidden" animate="show">
           <div>
-            <motion.div variants={itemVariants} className="card glass-panel">
-              <h3>All complaint tickets</h3>
+            <motion.div variants={itemVariants} className="card">
+              <h3>🎫 All complaint tickets</h3>
               {Object.keys(ticketsByUser).length === 0 && <div className="small">No tickets</div>}
               {Object.entries(ticketsByUser).map(([user, list]) => (
                 <div key={user} className="user-block">
@@ -164,8 +164,8 @@ const HrDashboard = () => {
           </div>
 
           <aside>
-            <motion.div variants={itemVariants} className="card glass-panel">
-              <h3>Employee Management</h3>
+            <motion.div variants={itemVariants} className="card">
+              <h3>👥 Employee Management</h3>
               <form onSubmit={addEmployee} className="employee-form">
                 <div className="form-row">
                   <input 

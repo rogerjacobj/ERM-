@@ -151,7 +151,7 @@ const Attendance = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h1>Attendance</h1>
+        <h1>⏰ Attendance</h1>
 
         {!isHr && (
           <motion.section 

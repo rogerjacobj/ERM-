@@ -1,36 +1,32 @@
-import { useState } from "react";
-import arrow from "../assets/Footers/Arrow.png";
-import moon from "../assets/Footers/moon.png";
-import sun from "../assets/Footers/sun.png";
 import { useTheme } from "../context/ThemeContext";
 import "./Footer.css";
 
 const Footer = () => {
-  const [expanded, setExpanded] = useState(false);
   const { isDark, toggleTheme } = useTheme();
 
   return (
     <footer className="footer-container">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="footer-toggle"
-        aria-expanded={expanded}
-        aria-label="Toggle theme options"
-      >
-        <img src={arrow} alt="" className={`footer-arrow ${expanded ? 'open' : ''}`} />
-      </button>
-
-      <div className={`footer-palette ${expanded ? 'open' : ''}`}>
-        <button
-          onClick={toggleTheme}
-          className="footer-theme-btn"
-          aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          <img src={isDark ? sun : moon} alt="" className="footer-theme-icon" />
-        </button>
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <span className="footer-logo">🏢 Employee Resources</span>
+          <span className="footer-copy">© {new Date().getFullYear()} All rights reserved.</span>
+        </div>
+        <div className="footer-right">
+          <button
+            onClick={toggleTheme}
+            className="footer-theme-toggle"
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDark ? '☀️' : '🌙'} {isDark ? 'Light' : 'Dark'}
+          </button>
+          <div className="footer-accents">
+            <span className="footer-dot footer-dot-yellow"></span>
+            <span className="footer-dot footer-dot-blue"></span>
+            <span className="footer-dot footer-dot-pink"></span>
+            <span className="footer-dot footer-dot-mint"></span>
+          </div>
+        </div>
       </div>
-
-      <div className="footer-line" />
     </footer>
   );
 };

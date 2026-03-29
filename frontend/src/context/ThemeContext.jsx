@@ -14,7 +14,6 @@ export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDark(savedTheme === 'dark');
@@ -22,7 +21,6 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Apply theme to document with immediate effect
     const applyTheme = () => {
       if (isDark) {
         document.documentElement.classList.add('dark');
@@ -32,8 +30,6 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem('theme', 'light');
       }
     };
-
-    // Use requestAnimationFrame to ensure sync with React renders
     requestAnimationFrame(applyTheme);
   }, [isDark]);
 

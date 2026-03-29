@@ -1,85 +1,96 @@
 @import "tailwindcss";
 
 @theme {
-  --font-mono: "Roboto Mono", monospace;
-  --font-rubik: "Rubik", sans-serif;
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
 :root {
-  /* Ultra-modern light theme */
-  --color-bg: #f8fafc;
-  --color-bg-elevated: rgba(255, 255, 255, 0.75);
-  --color-text: #0f172a;
-  --color-text-muted: #475569;
-  --color-primary: #3b82f6; /* Modern Blue */
-  --color-primary-hover: #2563eb;
-  --color-highlight: rgba(239, 246, 255, 0.8);
-  --color-border: rgba(15, 23, 42, 0.06);
-  --color-border-strong: rgba(15, 23, 42, 0.12);
-  
-  --accent: #6366f1; /* Indigo */
-  --accent-2: #0ea5e9; /* Sky */
-  --success: #10b981;
-  --danger: #ef4444;
-  
-  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.12);
-  --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.4);
-  
-  --radius: 16px;
-  --radius-sm: 10px;
-  --font-rubik: 'Rubik', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-  
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --glass-blur: 16px;
+  /* ═══════════════════════════════
+     NEOBRUTALISM DESIGN TOKENS
+     ═══════════════════════════════ */
+
+  /* Core palette */
+  --neo-yellow: #FFE600;
+  --neo-blue: #4F46E5;
+  --neo-pink: #FF4D8D;
+  --neo-mint: #00F5D4;
+  --neo-orange: #FF6B35;
+  --neo-lavender: #C4B5FD;
+  --neo-lime: #A3E635;
+  --neo-red: #EF4444;
+  --neo-white: #FFFDF7;
+  --neo-black: #1A1A1A;
+
+  /* Functional tokens */
+  --color-bg: #FFFDF7;
+  --color-text: #1A1A1A;
+  --color-text-muted: #4A4A4A;
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-success: #10B981;
+  --color-danger: #EF4444;
+
+  /* Card/elevated bg */
+  --color-card-bg: #fff;
+
+  /* Borders & Shadows (hard, no blur) */
+  --neo-border: 3px solid #1A1A1A;
+  --neo-border-thin: 2px solid #1A1A1A;
+  --neo-shadow: 4px 4px 0px #1A1A1A;
+  --neo-shadow-sm: 2px 2px 0px #1A1A1A;
+  --neo-shadow-lg: 6px 6px 0px #1A1A1A;
+  --neo-shadow-hover: 6px 6px 0px #1A1A1A;
+  --neo-shadow-pressed: 1px 1px 0px #1A1A1A;
+
+  /* Radius */
+  --neo-radius: 12px;
+  --neo-radius-sm: 8px;
+  --neo-radius-lg: 16px;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
+/* ═══════════════════════════════
+   DARK MODE (Neobrutalism Dark)
+   ═══════════════════════════════ */
 .dark {
-  /* Ultra-modern dark theme */
-  --color-bg: #0b1120;
-  --color-bg-elevated: rgba(30, 41, 59, 0.6);
-  --color-text: #f8fafc;
-  --color-text-muted: #94a3b8;
-  --color-primary: #60a5fa;
-  --color-primary-hover: #93c5fd;
-  --color-highlight: rgba(30, 41, 59, 0.8);
-  --color-border: rgba(248, 250, 252, 0.06);
-  --color-border-strong: rgba(248, 250, 252, 0.15);
-  
-  --accent: #818cf8;
-  --accent-2: #38bdf8;
-  --success: #34d399;
-  --danger: #f87171;
-  
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 20px rgba(96, 165, 250, 0.4);
-  
-  --glass-bg: rgba(15, 23, 42, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.05);
+  --color-bg: #1A1A1A;
+  --color-text: #F5F5F5;
+  --color-text-muted: #AAAAAA;
+  --color-card-bg: #2D2D2D;
+  --neo-black: #F5F5F5;
+  --neo-white: #1A1A1A;
+
+  /* Shadows use lighter color in dark mode */
+  --neo-border: 3px solid #F5F5F5;
+  --neo-border-thin: 2px solid #888;
+  --neo-shadow: 4px 4px 0px #555;
+  --neo-shadow-sm: 2px 2px 0px #555;
+  --neo-shadow-lg: 6px 6px 0px #555;
+  --neo-shadow-hover: 6px 6px 0px #666;
+  --neo-shadow-pressed: 1px 1px 0px #444;
 }
+
+/* ═══════════════════════
+   BASE STYLES
+   ═══════════════════════ */
 
 html, body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  /* Smoothly animated background mesh gradient illusion */
-  background: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.05), transparent 40%),
-              radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.05), transparent 40%);
-  background-attachment: fixed;
-  background-color: var(--color-bg);
-  transition: background-color 0.4s ease, color 0.4s ease;
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family: var(--font-rubik);
+  font-family: var(--font-body);
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -95,15 +106,81 @@ html, body {
   cursor: none !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
 @media (max-width: 640px) {
   html, body {
     font-size: 15px;
   }
 }
 
-/* ==================
+/* ═══════════════════════════
+   NEOBRUTALISM UTILITY CLASSES
+   ═══════════════════════════ */
+
+.neo-card {
+  background: var(--color-card-bg);
+  border: var(--neo-border);
+  border-radius: var(--neo-radius);
+  box-shadow: var(--neo-shadow);
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.neo-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-hover);
+}
+
+.neo-card-yellow {
+  background: var(--neo-yellow);
+}
+.dark .neo-card-yellow {
+  background: #3D3500;
+  color: var(--neo-yellow);
+}
+
+.neo-card-blue {
+  background: #DBEAFE;
+}
+.dark .neo-card-blue {
+  background: #1E2A4A;
+}
+
+.neo-card-pink {
+  background: #FCE7F3;
+}
+.dark .neo-card-pink {
+  background: #3D1A2E;
+}
+
+.neo-card-mint {
+  background: #D1FAE5;
+}
+.dark .neo-card-mint {
+  background: #1A3D2E;
+}
+
+.neo-card-lavender {
+  background: var(--neo-lavender);
+}
+.dark .neo-card-lavender {
+  background: #2E2650;
+}
+
+.neo-card-orange {
+  background: #FED7AA;
+}
+.dark .neo-card-orange {
+  background: #3D2A1A;
+}
+
+/* ═══════════════════════════
    GLOBAL ANIMATIONS
-   ================== */
+   ═══════════════════════════ */
 
 @keyframes fadeInUp {
   from {
@@ -132,6 +209,23 @@ html, body {
   }
 }
 
+@keyframes neo-press {
+  0% { transform: translate(0, 0); box-shadow: var(--neo-shadow); }
+  50% { transform: translate(2px, 2px); box-shadow: var(--neo-shadow-pressed); }
+  100% { transform: translate(0, 0); box-shadow: var(--neo-shadow); }
+}
+
+@keyframes neo-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes neo-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
 .animate-fade-up {
   animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -151,17 +245,15 @@ html, body {
 .delay-400 { animation-delay: 400ms; opacity: 0; }
 .delay-500 { animation-delay: 500ms; opacity: 0; }
 
-/* Global Glassmorphism Utility classes */
+/* Legacy glass-panel → now neo-card alias for backward compat */
 .glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
-  border-radius: var(--radius);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--color-card-bg);
+  border: var(--neo-border);
+  border-radius: var(--neo-radius);
+  box-shadow: var(--neo-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .glass-panel:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-hover);
 }

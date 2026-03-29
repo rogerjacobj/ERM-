@@ -87,25 +87,25 @@ const EmployeeDashboard = () => {
         transition={{ duration: 0.4 }}
       >
         <div className="header-row">
-          <h1>Employee Dashboard</h1>
-          <button className="dash-btn-logout" onClick={logout}>Logout</button>
+          <h1>📋 Employee Dashboard</h1>
+          <button className="dash-btn-logout" onClick={logout}>🚪 Logout</button>
         </div>
 
         {error && <div className="dash-error" role="alert">{error}</div>}
 
         <motion.div className="stats-grid" variants={containerVariants} initial="hidden" animate="show">
-          <motion.div variants={itemVariants} className="card glass-panel">
-            <h3>Welcome</h3>
+          <motion.div variants={itemVariants} className="card neo-card-yellow">
+            <h3>👋 Welcome</h3>
             <div className="stat">{data ? data.welcome : '—'}</div>
             <div className="small">User info</div>
           </motion.div>
-          <motion.div variants={itemVariants} className="card glass-panel">
-            <h3>Open Tasks</h3>
+          <motion.div variants={itemVariants} className="card neo-card-mint">
+            <h3>📋 Open Tasks</h3>
             <div className="stat">{data ? data.tasks.length : 0}</div>
             <div className="small">Tasks assigned</div>
           </motion.div>
-          <motion.div variants={itemVariants} className="card glass-panel">
-            <h3>Announcements</h3>
+          <motion.div variants={itemVariants} className="card neo-card-pink">
+            <h3>📢 Announcements</h3>
             <div className="stat">{data ? data.announcements.length : 0}</div>
             <div className="small">Company news</div>
           </motion.div>
@@ -113,8 +113,8 @@ const EmployeeDashboard = () => {
 
         <motion.div className="main-grid" variants={containerVariants} initial="hidden" animate="show">
           <div>
-            <motion.div variants={itemVariants} className="card glass-panel">
-              <h3>Create complaint ticket</h3>
+            <motion.div variants={itemVariants} className="card">
+              <h3>🎫 Create complaint ticket</h3>
               <form className="ticket-form" onSubmit={submitTicket}>
                 <div className="form-row">
                   <input placeholder="Title" value={title} onChange={(e)=>setTitle(e.target.value)} required />
@@ -134,8 +134,8 @@ const EmployeeDashboard = () => {
               </form>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="card glass-panel" style={{ marginTop: '1rem' }}>
-              <h3>Your complaint tickets</h3>
+            <motion.div variants={itemVariants} className="card" style={{ marginTop: '1rem' }}>
+              <h3>📨 Your complaint tickets</h3>
               <div className="small">Filter and track status of your tickets</div>
               <div style={{ marginTop: 8 }} className="filters">
                 <label className="small">Show:</label>
@@ -180,8 +180,8 @@ const EmployeeDashboard = () => {
           </div>
 
           <aside>
-            <motion.div variants={itemVariants} className="card glass-panel">
-              <h3>Quick Actions</h3>
+            <motion.div variants={itemVariants} className="card neo-card-lavender">
+              <h3>⚡ Quick Actions</h3>
               <div className="small">You can create tickets and track their status here.</div>
             </motion.div>
           </aside>

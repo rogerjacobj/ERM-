@@ -1,3 +1,7 @@
+/* ═══════════════════════════════
+   NEOBRUTALISM BLOG PAGE
+   ═══════════════════════════════ */
+
 .blog-page {
   flex: 1;
   max-width: 800px;
@@ -10,10 +14,11 @@
   margin-bottom: 2.5rem;
 }
 
-.blog-hero h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--color-text);
+.blog-hero h1, .blog-hero h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--neo-black);
   margin: 0 0 0.5rem;
 }
 
@@ -21,6 +26,7 @@
   font-size: 1rem;
   color: var(--color-text-muted);
   margin: 0;
+  font-weight: 500;
 }
 
 .blog-grid {
@@ -29,36 +35,51 @@
 }
 
 .blog-card {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border: var(--neo-border);
+  border-radius: var(--neo-radius);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: var(--neo-shadow);
+  transition: all 0.15s ease;
 }
 
+.blog-card:nth-child(3n+1) { background: var(--neo-lavender); }
+.blog-card:nth-child(3n+2) { background: #D1FAE5; }
+.blog-card:nth-child(3n) { background: #FED7AA; }
+
+.dark .blog-card:nth-child(3n+1) { background: #2E2650; }
+.dark .blog-card:nth-child(3n+2) { background: #1A3D2E; }
+.dark .blog-card:nth-child(3n) { background: #3D2A1A; }
+
 .blog-card:hover {
-  box-shadow: var(--shadow-md);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-hover);
 }
 
 .blog-date {
-  display: block;
+  display: inline-block;
+  font-family: var(--font-heading);
   font-size: 0.8rem;
-  color: var(--color-primary);
-  font-weight: 600;
+  color: var(--neo-black);
+  font-weight: 700;
   margin-bottom: 0.5rem;
+  background: var(--neo-yellow);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--neo-black);
+  border-radius: var(--neo-radius-sm);
 }
 
 .blog-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--neo-black);
   margin: 0 0 0.5rem;
 }
 
 .blog-excerpt {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--color-text-muted);
+  color: var(--neo-black);
   line-height: 1.5;
+  opacity: 0.8;
 }

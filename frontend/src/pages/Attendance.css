@@ -1,7 +1,12 @@
+/* ═══════════════════════════════
+   NEOBRUTALISM ATTENDANCE PAGE
+   ═══════════════════════════════ */
+
 .attendance-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
 }
 
 .attendance-main {
@@ -13,30 +18,36 @@
 }
 
 .attendance-main h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--neo-black);
   margin: 0 0 1.5rem;
 }
 
 .attendance-main h2 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--neo-black);
   margin: 0 0 1rem;
 }
 
 .attendance-loading {
   color: var(--color-text-muted);
+  font-weight: 600;
 }
 
 .attendance-today {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  background: #D1FAE5;
+}
+.dark .attendance-today {
+  background: #1A3D2E;
+  border: var(--neo-border);
+  border-radius: var(--neo-radius);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--neo-shadow);
 }
 
 .attendance-actions {
@@ -45,36 +56,45 @@
 
 .att-btn {
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  border-radius: var(--neo-radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  border: none;
-  transition: opacity 0.2s, transform 0.2s;
+  border: var(--neo-border);
+  box-shadow: var(--neo-shadow);
+  transition: all 0.1s ease;
 }
 
 .att-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .att-btn-in {
-  background: linear-gradient(135deg, var(--success), #10b981);
+  background: #059669;
   color: white;
 }
 
 .att-btn-out {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: var(--neo-blue);
   color: white;
 }
 
 .att-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-hover);
+}
+
+.att-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--neo-shadow-pressed);
 }
 
 .att-done {
   color: var(--color-text-muted);
-  font-weight: 500;
+  font-weight: 700;
+  font-family: var(--font-heading);
 }
 
 .att-clockout {
@@ -88,33 +108,39 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  font-family: var(--font-heading);
   font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: 700;
+  color: var(--neo-black);
 }
 
 .att-notes-input {
   width: 100%;
   resize: vertical;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
+  border: var(--neo-border-thin);
+  border-radius: var(--neo-radius-sm);
+  background: var(--color-card-bg);
   color: var(--color-text);
   padding: 0.65rem 0.875rem;
   font-size: 0.95rem;
+  font-weight: 500;
   outline: none;
+  transition: all 0.15s ease;
 }
 
 .att-notes-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  background: var(--neo-yellow);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--neo-shadow-sm);
 }
 
 .att-today-details {
   display: flex;
   gap: 1.5rem;
   font-size: 0.95rem;
-  color: var(--color-text-muted);
+  color: var(--neo-black);
+  font-weight: 600;
+  margin-top: 0.75rem;
 }
 
 .attendance-filter {
@@ -124,32 +150,44 @@
 .attendance-filter input {
   width: 100%;
   max-width: 320px;
-  padding: 0.6rem 0.875rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding: 0.7rem 0.875rem;
+  border: var(--neo-border-thin);
+  border-radius: var(--neo-radius-sm);
+  background: #fff;
+  color: var(--neo-black);
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.attendance-filter input:focus {
+  outline: none;
+  background: var(--neo-yellow);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--neo-shadow-sm);
 }
 
 .attendance-error {
-  padding: 0.75rem 1rem;
-  background: rgba(220, 38, 38, 0.08);
-  color: var(--danger);
-  border-radius: var(--radius-sm);
+  padding: 0.875rem 1rem;
+  background: #FEE2E2;
+  color: var(--neo-red);
+  border: var(--neo-border-thin);
+  border-radius: var(--neo-radius-sm);
   margin-bottom: 1rem;
+  font-weight: 600;
 }
 
 .attendance-history {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  background: #fff;
+  border: var(--neo-border);
+  border-radius: var(--neo-radius);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--neo-shadow);
 }
 
 .attendance-empty {
   color: var(--color-text-muted);
   margin: 0;
+  font-weight: 500;
 }
 
 .attendance-table-wrap {
@@ -163,40 +201,68 @@
 
 .attendance-table th,
 .attendance-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--neo-black);
 }
 
 .attendance-table th {
+  font-family: var(--font-heading);
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: 800;
+  color: var(--neo-black);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  background: var(--neo-yellow);
+}
+.dark .attendance-table th {
+  background: #3D3500;
+  color: var(--neo-yellow);
+}
+
+.attendance-table th:first-child {
+  border-radius: var(--neo-radius-sm) 0 0 0;
+}
+.attendance-table th:last-child {
+  border-radius: 0 var(--neo-radius-sm) 0 0;
+}
+
+.attendance-table tbody tr {
+  transition: background 0.1s ease;
+}
+
+.attendance-table tbody tr:hover {
+  background: #FEF3C7;
+}
+.dark .attendance-table tbody tr:hover {
+  background: #3D3500;
 }
 
 .attendance-table td {
   font-size: 0.95rem;
-  color: var(--color-text);
+  color: var(--neo-black);
+  font-weight: 500;
 }
 
 .att-badge {
   display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--neo-radius-sm);
+  font-family: var(--font-heading);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 2px solid var(--neo-black);
 }
 
 .att-badge.active {
-  background: rgba(79, 70, 229, 0.12);
-  color: var(--accent);
+  background: var(--neo-lavender);
+  color: var(--neo-black);
 }
 
 .att-badge.complete {
-  background: rgba(5, 150, 105, 0.12);
-  color: var(--success);
+  background: var(--neo-mint);
+  color: var(--neo-black);
 }
 
 @media (max-width: 640px) {
@@ -205,13 +271,13 @@
   }
 
   .attendance-main h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
   }
 
   .attendance-today,
   .attendance-history {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .att-btn {

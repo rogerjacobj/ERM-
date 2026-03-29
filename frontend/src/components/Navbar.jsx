@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Navbar.css';
-import bell from '../assets/Navbar/Bell_pin_fill.png';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -49,12 +48,12 @@ const Navbar = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         }}>
-          Employee Resources
+          🏢 Employee Resources
         </Link>
 
         {!token && (
           <div className="navbar-login-desktop">
-            <Link to="/login" className="login-pill">Sign in</Link>
+            <Link to="/login" className="login-pill">✦ Sign in</Link>
           </div>
         )}
 
@@ -72,7 +71,7 @@ const Navbar = () => {
         <nav className={`navbar-nav ${open ? 'open' : ''}`}>
           {!token && (
             <Link to="/login" className="login-pill-mobile" onClick={() => setOpen(false)}>
-              Sign in
+              ✦ Sign in
             </Link>
           )}
           <ul className="navbar-list">
@@ -99,10 +98,6 @@ const Navbar = () => {
             ))}
           </ul>
         </nav>
-
-        <div className="navbar-actions">
-          <img src={bell} alt="Notifications" className="navbar-bell" />
-        </div>
       </div>
     </header>
   );
