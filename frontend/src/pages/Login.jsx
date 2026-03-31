@@ -56,18 +56,18 @@ const Login = () => {
   }
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 20 },
+    hidden: { opacity: 0, y: 20 },
     show: { 
-      opacity: 1, scale: 1, y: 0, 
+      opacity: 1, y: 0, 
       transition: { 
-        type: "spring", stiffness: 50, damping: 15, duration: 0.6,
+        type: "spring", stiffness: 50, damping: 15,
         staggerChildren: 0.1, delayChildren: 0.1 
       }
     }
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60 } }
   }
 
@@ -76,13 +76,24 @@ const Login = () => {
       <Navbar />
       <main className="login-main">
         <motion.div 
-          className="login-card glass-panel"
+          className="login-card"
           variants={cardVariants}
           initial="hidden"
           animate="show"
         >
-          <motion.h1 variants={itemVariants} className="login-title">Sign in</motion.h1>
-          <motion.p variants={itemVariants} className="login-subtitle">Access for employees and HR</motion.p>
+          <motion.div variants={itemVariants} className="login-header">
+            <div className="login-logo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+              <span>WorkHub</span>
+            </div>
+            <h1 className="login-title">Welcome back</h1>
+            <p className="login-subtitle">Sign in to access your dashboard</p>
+          </motion.div>
 
           <motion.div variants={itemVariants} className="role-toggle" role="tablist" aria-label="Select role">
             <button
@@ -99,13 +110,13 @@ const Login = () => {
               className={`role-btn ${role === 'hr' ? 'active' : ''}`}
               onClick={() => setRole('hr')}
             >
-              HR
+              HR Admin
             </button>
           </motion.div>
 
           <motion.form variants={itemVariants} className="login-form" onSubmit={handleSubmit} noValidate>
             <label className="login-field">
-              <span className="login-label">Email</span>
+              <span className="login-label">Email address</span>
               <input
                 type="email"
                 value={email}
@@ -136,7 +147,7 @@ const Login = () => {
                   initial={{ opacity: 0, height: 0 }} 
                   animate={{ opacity: 1, height: 'auto' }} 
                   exit={{ opacity: 0, height: 0 }} 
-                  className="login-error overflow-hidden" 
+                  className="login-error" 
                   role="alert"
                 >
                   {error}
@@ -145,12 +156,12 @@ const Login = () => {
             </AnimatePresence>
 
             <button className="login-submit" type="submit" disabled={loading}>
-              {loading ? 'Signing in…' : `Sign in as ${role === 'hr' ? 'HR' : 'Employee'}`}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </motion.form>
 
           <motion.p variants={itemVariants} className="login-footer">
-            Don't have an account? Contact HR to create one.
+            {"Don't have an account? Contact HR to create one."}
           </motion.p>
         </motion.div>
       </main>

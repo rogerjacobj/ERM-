@@ -107,8 +107,8 @@ const JobProgress = () => {
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    show: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 60, damping: 15 } }
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 15 } }
   }
 
   if (!token) return null
@@ -117,7 +117,7 @@ const JobProgress = () => {
     return (
       <div className="jobprogress-root">
         <Navbar />
-        <main className="jobprogress-main"><p className="jobprogress-loading">Loading…</p></main>
+        <main className="jobprogress-main"><p className="jobprogress-loading">Loading...</p></main>
       </div>
     )
   }
@@ -127,19 +127,25 @@ const JobProgress = () => {
       <Navbar />
       <motion.main 
         className="jobprogress-main"
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h1>📊 Job Progress Tracker</h1>
+        <h1>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 3v18h18"/>
+            <path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+          Job Progress
+        </h1>
 
         {isHr && (
           <motion.section 
-            className="jobprogress-create glass-panel"
+            className="jobprogress-create"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
           >
-            <h2>Assign new job</h2>
+            <h2>Assign New Job</h2>
             <form onSubmit={createJob} className="jobprogress-form">
               <div className="jobprogress-form-row">
                 <input
@@ -168,7 +174,7 @@ const JobProgress = () => {
                 />
               </div>
               <button type="submit" className="jobprogress-submit" disabled={submitting}>
-                {submitting ? 'Creating…' : 'Create job'}
+                {submitting ? 'Creating...' : 'Create Job'}
               </button>
             </form>
           </motion.section>
@@ -177,7 +183,7 @@ const JobProgress = () => {
         {error && <div className="jobprogress-error">{error}</div>}
 
         <section className="jobprogress-list">
-          <h2>{isHr ? 'All jobs' : 'Your jobs'}</h2>
+          <h2>{isHr ? 'All Jobs' : 'Your Jobs'}</h2>
           {jobs.length === 0 ? (
             <p className="jobprogress-empty">No jobs yet</p>
           ) : (
@@ -191,12 +197,12 @@ const JobProgress = () => {
                 {jobs.map((job) => (
                   <motion.div 
                     key={job.id} 
-                    className="jobprogress-card glass-panel"
+                    className="jobprogress-card"
                     variants={itemVariants}
                     layout
                     initial="hidden"
                     animate="show"
-                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                    exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                   >
                     <div className="jobprogress-card-header">
                       <h3>{job.title}</h3>

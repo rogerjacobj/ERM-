@@ -49,19 +49,27 @@ const Events = () => {
       <main className="events-main">
         <motion.section 
           className="events-hero"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
         >
           <div>
-            <h1>🎉 Company Events</h1>
-            <p className="events-lead">Stay connected — join company activities, learning sessions, and social gatherings.</p>
+            <h1>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2"/>
+                <path d="M16 2v4"/>
+                <path d="M8 2v4"/>
+                <path d="M3 10h18"/>
+              </svg>
+              Company Events
+            </h1>
+            <p className="events-lead">Stay connected with company activities, learning sessions, and social gatherings.</p>
           </div>
           <div className="events-search-wrap">
             <input
               type="search"
               className="events-search"
-              placeholder="Search events, locations, or topics"
+              placeholder="Search events..."
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
@@ -82,19 +90,19 @@ const Events = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                No events found.
+                No events found matching your search.
               </motion.div>
             )}
 
             {filtered.map(ev => (
               <motion.article 
                 key={ev.id} 
-                className="event-card glass-panel"
+                className="event-card"
                 variants={itemVariants}
                 layout
                 initial="hidden"
                 animate="show"
-                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
               >
                 <div className="event-date-block">
                   <strong>{new Date(ev.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong>
@@ -102,7 +110,13 @@ const Events = () => {
                 </div>
                 <div className="event-body">
                   <h3 className="event-title">{ev.title}</h3>
-                  <div className="event-meta">{ev.location} • {formatDate(ev.date)}</div>
+                  <div className="event-meta">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    {ev.location}
+                  </div>
                   <p className="event-desc">{ev.description}</p>
                   <div className="event-actions">
                     <button

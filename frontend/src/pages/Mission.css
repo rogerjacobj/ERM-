@@ -1,36 +1,37 @@
 /* ═══════════════════════════════
-   NEOBRUTALISM MISSION PAGE
+   PROFESSIONAL MISSION PAGE
    ═══════════════════════════════ */
 
 .mission-page {
   flex: 1;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
+  padding: 4rem 1.5rem 6rem;
 }
 
+/* Hero section */
 .mission-hero {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .mission-hero h1 {
-  font-family: var(--font-heading);
   font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 1rem;
 }
 
 .mission-lead {
   font-size: 1.125rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin: 0;
-  max-width: 36ch;
+  max-width: 500px;
   margin-inline: auto;
-  font-weight: 500;
+  line-height: 1.7;
 }
 
+/* Mission content */
 .mission-content {
   display: flex;
   flex-direction: column;
@@ -38,39 +39,90 @@
 }
 
 .mission-card {
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  padding: 1.5rem 1.75rem;
-  box-shadow: var(--neo-shadow);
-  transition: all 0.15s ease;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: all var(--transition-normal);
 }
 
-.mission-card:nth-child(1) { background: var(--neo-yellow); }
-.mission-card:nth-child(2) { background: #D1FAE5; }
-.mission-card:nth-child(3) { background: #FCE7F3; }
-
-.dark .mission-card:nth-child(1) { background: #3D3500; }
-.dark .mission-card:nth-child(2) { background: #1A3D2E; }
-.dark .mission-card:nth-child(3) { background: #3D1A2E; }
-
 .mission-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow-hover);
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .mission-card h2,
 .mission-card h3 {
-  font-family: var(--font-heading);
   font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mission-card h2 svg,
+.mission-card h3 svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-primary);
 }
 
 .mission-card p {
   margin: 0;
-  color: var(--neo-black);
-  line-height: 1.6;
-  font-weight: 500;
-  opacity: 0.85;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+
+/* Stats section */
+.mission-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.mission-stat {
+  text-align: center;
+}
+
+.mission-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.mission-stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+  .mission-page {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .mission-hero h1 {
+    font-size: 2rem;
+  }
+
+  .mission-hero {
+    margin-bottom: 3rem;
+  }
+
+  .mission-card {
+    padding: 1.5rem;
+  }
+
+  .mission-stats {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }

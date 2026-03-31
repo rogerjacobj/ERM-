@@ -22,8 +22,8 @@ const Navbar = () => {
   const navItems = [
     { to: isHomePage ? '#home' : '/', label: 'Home', isAnchor: isHomePage },
     { to: '/events', label: 'Events' },
-    ...(token ? [{ to: '/attendance', label: 'Attendance' }, { to: '/job-progress', label: 'Job Progress' }] : []),
-    { to: isHomePage ? '#mission' : '/mission', label: 'Our Mission', isAnchor: isHomePage },
+    ...(token ? [{ to: '/attendance', label: 'Attendance' }, { to: '/job-progress', label: 'Jobs' }] : []),
+    { to: isHomePage ? '#mission' : '/mission', label: 'Mission', isAnchor: isHomePage },
     { to: dashboardTo, label: 'Dashboard' },
     { to: isHomePage ? '#blog' : '/blog', label: 'Blog', isAnchor: isHomePage },
   ];
@@ -48,30 +48,19 @@ const Navbar = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         }}>
-          🏢 Employee Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          <span>WorkHub</span>
         </Link>
-
-        {!token && (
-          <div className="navbar-login-desktop">
-            <Link to="/login" className="login-pill">✦ Sign in</Link>
-          </div>
-        )}
-
-        <button
-          className="navbar-hamburger"
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-          onClick={() => setOpen(prev => !prev)}
-        >
-          <span className={`hamburger-line ${open ? 'open' : ''}`} />
-          <span className={`hamburger-line ${open ? 'open' : ''}`} />
-          <span className={`hamburger-line ${open ? 'open' : ''}`} />
-        </button>
 
         <nav className={`navbar-nav ${open ? 'open' : ''}`}>
           {!token && (
             <Link to="/login" className="login-pill-mobile" onClick={() => setOpen(false)}>
-              ✦ Sign in
+              Sign in
             </Link>
           )}
           <ul className="navbar-list">
@@ -88,7 +77,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={item.to}
-                    className="nav-link"
+                    className={`nav-link ${location.pathname === item.to ? 'active' : ''}`}
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
@@ -98,6 +87,23 @@ const Navbar = () => {
             ))}
           </ul>
         </nav>
+
+        {!token && (
+          <div className="navbar-login-desktop">
+            <Link to="/login" className="login-pill">Sign in</Link>
+          </div>
+        )}
+
+        <button
+          className="navbar-hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={() => setOpen(prev => !prev)}
+        >
+          <span className={`hamburger-line ${open ? 'open' : ''}`} />
+          <span className={`hamburger-line ${open ? 'open' : ''}`} />
+          <span className={`hamburger-line ${open ? 'open' : ''}`} />
+        </button>
       </div>
     </header>
   );

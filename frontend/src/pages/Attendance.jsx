@@ -16,7 +16,7 @@ function decodeToken() {
 }
 
 function formatTime(iso) {
-  if (!iso) return '—'
+  if (!iso) return '-'
   try {
     return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   } catch {
@@ -25,9 +25,9 @@ function formatTime(iso) {
 }
 
 function formatDuration(startIso, endIso) {
-  if (!startIso || !endIso) return '—'
+  if (!startIso || !endIso) return '-'
   const ms = new Date(endIso) - new Date(startIso)
-  if (!Number.isFinite(ms) || ms < 0) return '—'
+  if (!Number.isFinite(ms) || ms < 0) return '-'
   const totalMinutes = Math.round(ms / 60000)
   const hours = Math.floor(totalMinutes / 60)
   const minutes = totalMinutes % 60
@@ -123,11 +123,11 @@ const Attendance = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.05 } }
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 12 } }
   }
 
@@ -137,7 +137,7 @@ const Attendance = () => {
     return (
       <div className="attendance-root">
         <Navbar />
-        <main className="attendance-main"><p className="attendance-loading">Loading…</p></main>
+        <main className="attendance-main"><p className="attendance-loading">Loading...</p></main>
       </div>
     )
   }
@@ -151,20 +151,26 @@ const Attendance = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h1>⏰ Attendance</h1>
+        <h1>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Attendance
+        </h1>
 
         {!isHr && (
           <motion.section 
-            className="attendance-today glass-panel"
-            initial={{ opacity: 0, scale: 0.95 }}
+            className="attendance-today"
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 50, damping: 15 }}
+            transition={{ duration: 0.3 }}
           >
             <h2>Today</h2>
             <div className="attendance-actions">
               {!today?.checkIn ? (
                 <button className="att-btn att-btn-in" onClick={clockIn} disabled={actionLoading}>
-                  {actionLoading ? 'Clock in…' : 'Clock In'}
+                  {actionLoading ? 'Clocking in...' : 'Clock In'}
                 </button>
               ) : !today?.checkOut ? (
                 <div className="att-clockout">
@@ -180,7 +186,7 @@ const Attendance = () => {
                     />
                   </label>
                   <button className="att-btn att-btn-out" onClick={clockOut} disabled={actionLoading}>
-                    {actionLoading ? 'Clock out…' : 'Clock Out'}
+                    {actionLoading ? 'Clocking out...' : 'Clock Out'}
                   </button>
                 </div>
               ) : (
@@ -201,7 +207,7 @@ const Attendance = () => {
           <div className="attendance-filter">
             <input
               type="text"
-              placeholder="Filter by employee email"
+              placeholder="Filter by employee email..."
               value={employeeFilter}
               onChange={(e) => setEmployeeFilter(e.target.value)}
             />
@@ -211,13 +217,12 @@ const Attendance = () => {
         {error && <div className="attendance-error">{error}</div>}
 
         <motion.section 
-          className="attendance-history glass-panel"
-          style={{ marginTop: '2rem' }}
+          className="attendance-history"
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
-          <h2>{isHr ? 'All attendance' : 'History'}</h2>
+          <h2>{isHr ? 'All Attendance Records' : 'Your History'}</h2>
           {records.length === 0 ? (
             <p className="attendance-empty">No records yet</p>
           ) : (
