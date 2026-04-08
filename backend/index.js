@@ -485,6 +485,105 @@ app.patch('/api/jobs/:id', ensureAuth, async (req, res) => {
     }
 })
 
+// ─────────────────────────────────────────────
+// EMERGENCY COMPLAINTS  (max 2 per 14 days)
+// ─────────────────────────────────────────────
+const EMERGENCY_LIMIT = 2
+const EMERGENCY_WINDOW_DAYS = 14
+
+// Helper: count emergency complaints by email in last 14 days
+async function countRecentEmergency(email) {
+    const since = new Date(Date.now() - EMERGENCY_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString()
+    return db.collection('emergency_complaints').countDocuments({
+        employeeEmail: email,
+        createdAt: { $gte: since }
+    })
+}
+
+// GET /api/emergency-complaints/status  — remaining count + reset time for current user
+app.get('/api/emergency-complaints/status', ensureAuth, async (req, res) => {
+    try {
+        const { email } = req.user
+        const since = new Date(Date.now() - EMERGENCY_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString()
+        const recent = await db.collection('emergency_complaints')
+            .find({ employeeEmail: email, createdAt: { $gte: since } })
+            .sort({ createdAt: 1 })
+            .toArray()
+        const used = recent.length
+        const remaining = Math.max(0, EMERGENCY_LIMIT - used)
+        // reset time = oldest complaint date + 14 days
+        const resetAt = used > 0
+            ? new Date(new Date(recent[0].createdAt).getTime() + EMERGENCY_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString()
+            : null
+        return res.json({ used, remaining, limit: EMERGENCY_LIMIT, resetAt, windowDays: EMERGENCY_WINDOW_DAYS })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to fetch status' })
+    }
+})
+
+// POST /api/emergency-complaints  — create emergency complaint
+app.post('/api/emergency-complaints', ensureAuth, async (req, res) => {
+    try {
+        const { email } = req.user
+        const used = await countRecentEmergency(email)
+        if (used >= EMERGENCY_LIMIT) {
+            return res.status(429).json({
+                message: `Emergency complaint limit reached. You can only submit ${EMERGENCY_LIMIT} emergency complaints every ${EMERGENCY_WINDOW_DAYS} days.`
+            })
+        }
+        const { title, description, category } = req.body || {}
+        if (!title || !description) return res.status(400).json({ message: 'title and description are required' })
+
+        const complaint = {
+            id: `ec-${Date.now()}`,
+            employeeEmail: email,
+            title,
+            description,
+            category: category || 'general',
+            complaintType: 'emergency',
+            status: 'open',
+            createdAt: new Date().toISOString()
+        }
+        await db.collection('emergency_complaints').insertOne(complaint)
+        return res.status(201).json({ complaint })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to create emergency complaint' })
+    }
+})
+
+// GET /api/emergency-complaints  — get own emergency complaints (employee) or all (HR)
+app.get('/api/emergency-complaints', ensureAuth, async (req, res) => {
+    try {
+        const { email, role } = req.user
+        const filter = role === 'hr' ? {} : { employeeEmail: email }
+        const complaints = await db.collection('emergency_complaints')
+            .find(filter).sort({ createdAt: -1 }).toArray()
+        return res.json({ complaints })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to fetch emergency complaints' })
+    }
+})
+
+// PATCH /api/emergency-complaints/:id  — HR updates status
+app.patch('/api/emergency-complaints/:id', ensureAuth, async (req, res) => {
+    try {
+        const { role } = req.user
+        if (role !== 'hr') return res.status(403).json({ message: 'Only HR can update emergency complaints' })
+        const { id } = req.params
+        const { status } = req.body || {}
+        if (!status) return res.status(400).json({ message: 'status is required' })
+        await db.collection('emergency_complaints').updateOne({ id }, { $set: { status } })
+        const updated = await db.collection('emergency_complaints').findOne({ id })
+        return res.json({ complaint: updated })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to update complaint' })
+    }
+})
+
 // Start server immediately (required for Render health checks to pass quickly)
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
