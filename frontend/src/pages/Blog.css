@@ -1,85 +1,89 @@
 /* ═══════════════════════════════
-   NEOBRUTALISM BLOG PAGE
+   PROFESSIONAL BLOG SECTION
    ═══════════════════════════════ */
 
 .blog-page {
   flex: 1;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
+  padding: 6rem 1.5rem;
 }
 
 .blog-hero {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 4rem;
 }
 
-.blog-hero h1, .blog-hero h2 {
+.blog-hero h2 {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.5rem;
+  color: var(--text-main);
+  margin: 0 0 1rem;
 }
 
 .blog-lead {
-  font-size: 1rem;
-  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  color: var(--text-muted);
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .blog-grid {
   display: grid;
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 }
 
 .blog-card {
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  padding: 1.5rem;
-  box-shadow: var(--neo-shadow);
-  transition: all 0.15s ease;
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
 }
 
-.blog-card:nth-child(3n+1) { background: var(--neo-lavender); }
-.blog-card:nth-child(3n+2) { background: #D1FAE5; }
-.blog-card:nth-child(3n) { background: #FED7AA; }
-
-.dark .blog-card:nth-child(3n+1) { background: #2E2650; }
-.dark .blog-card:nth-child(3n+2) { background: #1A3D2E; }
-.dark .blog-card:nth-child(3n) { background: #3D2A1A; }
-
 .blog-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow-hover);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
 }
 
 .blog-date {
-  display: inline-block;
-  font-family: var(--font-heading);
   font-size: 0.8rem;
-  color: var(--neo-black);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: var(--neo-yellow);
-  padding: 0.2rem 0.6rem;
-  border: 1px solid var(--neo-black);
-  border-radius: var(--neo-radius-sm);
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: inline-block;
 }
 
 .blog-title {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 1rem;
+  line-height: 1.3;
 }
 
 .blog-excerpt {
   margin: 0;
-  font-size: 0.95rem;
-  color: var(--neo-black);
-  line-height: 1.5;
-  opacity: 0.8;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .blog-page {
+    padding: 4rem 1.5rem;
+  }
+  
+  .blog-hero h2 {
+    font-size: 2.25rem;
+  }
 }

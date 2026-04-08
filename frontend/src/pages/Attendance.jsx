@@ -151,75 +151,93 @@ const Attendance = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h1>⏰ Attendance</h1>
+        <motion.div 
+          className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <h1 className="m-0">Attendance</h1>
+          {isHr && (
+            <div className="attendance-filter m-0">
+              <input
+                type="text"
+                placeholder="Search employee email..."
+                value={employeeFilter}
+                onChange={(e) => setEmployeeFilter(e.target.value)}
+              />
+            </div>
+          )}
+        </motion.div>
 
         {!isHr && (
           <motion.section 
             className="attendance-today glass-panel"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 50, damping: 15 }}
+            transition={{ duration: 0.5 }}
           >
-            <h2>Today</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="m-0">Daily Check-in</h2>
+              {today?.checkIn && !today?.checkOut && <div className="att-badge active animate-pulse">Session Active</div>}
+              {today?.checkOut && <div className="att-badge complete">Shift Completed</div>}
+            </div>
+
             <div className="attendance-actions">
               {!today?.checkIn ? (
                 <button className="att-btn att-btn-in" onClick={clockIn} disabled={actionLoading}>
-                  {actionLoading ? 'Clock in…' : 'Clock In'}
+                  {actionLoading ? 'Connecting...' : 'Start Shift'}
                 </button>
               ) : !today?.checkOut ? (
                 <div className="att-clockout">
                   <label className="att-notes-label">
-                    Notes (optional)
+                    Activity Notes
                     <textarea
                       className="att-notes-input"
                       value={clockOutNotes}
                       onChange={(e) => setClockOutNotes(e.target.value)}
                       rows={3}
-                      placeholder="Any work notes for today..."
+                      placeholder="What did you work on today?"
                       disabled={actionLoading}
                     />
                   </label>
                   <button className="att-btn att-btn-out" onClick={clockOut} disabled={actionLoading}>
-                    {actionLoading ? 'Clock out…' : 'Clock Out'}
+                    {actionLoading ? 'Finalizing...' : 'End Shift'}
                   </button>
                 </div>
               ) : (
-                <div className="att-done">Clocked out for today</div>
+                <div className="att-done">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-green-600">
+                    <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  You've completed your attendance for today.
+                </div>
               )}
             </div>
-            {today && (
+            
+            {today?.checkIn && (
               <div className="att-today-details">
-                <span>In: {formatTime(today.checkIn)}</span>
-                <span>Out: {formatTime(today.checkOut)}</span>
-                <span>Worked: {formatDuration(today.checkIn, today.checkOut)}</span>
+                <span><strong>Clock In:</strong> {formatTime(today.checkIn)}</span>
+                {today.checkOut && <span><strong>Clock Out:</strong> {formatTime(today.checkOut)}</span>}
+                {today.checkOut && <span><strong>Duration:</strong> {formatDuration(today.checkIn, today.checkOut)}</span>}
               </div>
             )}
           </motion.section>
-        )}
-
-        {isHr && (
-          <div className="attendance-filter">
-            <input
-              type="text"
-              placeholder="Filter by employee email"
-              value={employeeFilter}
-              onChange={(e) => setEmployeeFilter(e.target.value)}
-            />
-          </div>
         )}
 
         {error && <div className="attendance-error">{error}</div>}
 
         <motion.section 
           className="attendance-history glass-panel"
-          style={{ marginTop: '2rem' }}
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
-          <h2>{isHr ? 'All attendance' : 'History'}</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="m-0">{isHr ? 'Organization Records' : 'Previous Sessions'}</h2>
+          </div>
+
           {records.length === 0 ? (
-            <p className="attendance-empty">No records yet</p>
+            <p className="attendance-empty">No attendance records found.</p>
           ) : (
             <div className="attendance-table-wrap">
               <table className="attendance-table">
@@ -227,28 +245,31 @@ const Attendance = () => {
                   <tr>
                     {isHr && <th>Employee</th>}
                     <th>Date</th>
-                    <th>Check In</th>
-                    <th>Check Out</th>
-                    <th>Worked</th>
+                    <th>In</th>
+                    <th>Out</th>
+                    <th>Duration</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <AnimatePresence>
+                  <AnimatePresence mode="popLayout">
                     {records.map((r) => (
                       <motion.tr 
                         key={r.id}
                         variants={itemVariants}
+                        initial="hidden"
+                        animate="show"
+                        exit={{ opacity: 0, x: -10 }}
                         layout
                       >
-                        {isHr && <td>{r.employeeEmail}</td>}
+                        {isHr && <td className="font-medium">{r.employeeEmail}</td>}
                         <td>{r.date}</td>
-                        <td>{formatTime(r.checkIn)}</td>
-                        <td>{formatTime(r.checkOut)}</td>
-                        <td>{formatDuration(r.checkIn, r.checkOut)}</td>
+                        <td className="text-slate-500">{formatTime(r.checkIn)}</td>
+                        <td className="text-slate-500">{formatTime(r.checkOut)}</td>
+                        <td className="font-medium">{formatDuration(r.checkIn, r.checkOut)}</td>
                         <td>
                           <span className={`att-badge ${r.checkOut ? 'complete' : 'active'}`}>
-                            {r.checkOut ? 'Complete' : 'Active'}
+                            {r.checkOut ? 'Complete' : 'Clocked In'}
                           </span>
                         </td>
                       </motion.tr>

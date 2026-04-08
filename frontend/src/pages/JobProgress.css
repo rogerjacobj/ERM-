@@ -1,86 +1,86 @@
 /* ═══════════════════════════════
-   NEOBRUTALISM JOB PROGRESS PAGE
+   PROFESSIONAL JOB PROGRESS PAGE
    ═══════════════════════════════ */
 
 .jobprogress-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg);
+  background: var(--bg-main);
 }
 
 .jobprogress-main {
   flex: 1;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 3rem;
+  padding: 8rem 1.5rem 4rem;
   width: 100%;
 }
 
 .jobprogress-main h1 {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 1.5rem;
+  color: var(--text-main);
+  margin: 0 0 2rem;
+  letter-spacing: -0.04em;
 }
 
 .jobprogress-main h2 {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--neo-black);
-  margin: 0 0 1rem;
+  color: var(--text-main);
+  margin: 0 0 1.5rem;
 }
 
 .jobprogress-loading {
-  color: var(--color-text-muted);
-  font-weight: 600;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-align: center;
+  padding: 4rem;
 }
 
 .jobprogress-create {
-  background: var(--neo-yellow);
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: var(--neo-shadow);
-}
-.dark .jobprogress-create {
-  background: #3D3500;
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
 }
 
 .jobprogress-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .jobprogress-form-row {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .jobprogress-form-row input,
 .jobprogress-form-row select,
 .jobprogress-form-row textarea {
-  padding: 0.7rem 0.875rem;
-  border: var(--neo-border-thin);
-  border-radius: var(--neo-radius-sm);
-  background: var(--color-card-bg);
-  color: var(--color-text);
+  padding: 0.875rem 1rem;
+  border: var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-main);
   font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.15s ease;
+  font-weight: 400;
+  transition: all 0.2s ease;
 }
 
 .jobprogress-form-row input:focus,
 .jobprogress-form-row select:focus,
 .jobprogress-form-row textarea:focus {
   outline: none;
-  transform: translate(-1px, -1px);
-  box-shadow: var(--neo-shadow-sm);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 @media (min-width: 600px) {
@@ -95,204 +95,194 @@
 
 .jobprogress-submit {
   align-self: flex-start;
-  padding: 0.7rem 1.5rem;
-  background: var(--neo-blue);
+  padding: 0.875rem 2rem;
+  background: var(--primary);
   color: white;
-  border: var(--neo-border-thin);
-  border-radius: var(--neo-radius-sm);
+  border: none;
+  border-radius: var(--radius-md);
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--neo-shadow-sm);
-  transition: all 0.1s ease;
+  box-shadow: 0 4px 12px var(--primary-glow);
+  transition: all 0.2s ease;
 }
 
 .jobprogress-submit:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--neo-black);
-}
-
-.jobprogress-submit:active:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: var(--neo-shadow-pressed);
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--primary-glow);
 }
 
 .jobprogress-submit:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .jobprogress-error {
-  padding: 0.875rem 1rem;
-  background: #FEE2E2;
-  color: var(--neo-red);
-  border: var(--neo-border-thin);
-  border-radius: var(--neo-radius-sm);
-  margin-bottom: 1rem;
-  font-weight: 600;
+  padding: 1rem 1.25rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  font-weight: 500;
 }
 
 .jobprogress-list {
-  background: #fff;
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  padding: 1.5rem;
-  box-shadow: var(--neo-shadow);
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-md);
 }
 
 .jobprogress-empty {
-  color: var(--color-text-muted);
+  color: var(--text-muted);
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .jobprogress-cards {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .jobprogress-card {
-  padding: 1.5rem;
-  background: #fff;
-  border: var(--neo-border);
-  border-radius: var(--neo-radius-sm);
-  box-shadow: var(--neo-shadow-sm);
-  transition: all 0.15s ease;
+  padding: 2rem;
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
 }
 
-.jobprogress-card:nth-child(3n+1) { background: #FEF3C7; }
-.jobprogress-card:nth-child(3n+2) { background: #DBEAFE; }
-.jobprogress-card:nth-child(3n) { background: #D1FAE5; }
-
-.dark .jobprogress-card:nth-child(3n+1) { background: #3D3500; }
-.dark .jobprogress-card:nth-child(3n+2) { background: #1E2A4A; }
-.dark .jobprogress-card:nth-child(3n) { background: #1A3D2E; }
-
 .jobprogress-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 .jobprogress-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .jobprogress-card-header h3 {
   font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 0.5rem;
 }
 
 .jobprogress-assignee {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--primary);
   font-weight: 600;
-  background: var(--neo-yellow);
-  padding: 0.2rem 0.5rem;
-  border: 1px solid var(--neo-black);
-  border-radius: var(--neo-radius-sm);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
 }
 
 .jobprogress-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin: 0 0 0.75rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+  line-height: 1.6;
 }
 
 .jobprogress-meta {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .jobprogress-progressbar {
-  height: 14px;
-  border-radius: var(--neo-radius-sm);
-  background: #fff;
-  border: var(--neo-border-thin);
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.dark .jobprogress-progressbar {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .jobprogress-progressbar-fill {
   height: 100%;
   width: 0%;
-  background: var(--neo-blue);
-  border-radius: var(--neo-radius-sm);
-  transition: width 0.25s ease;
+  background: linear-gradient(90deg, var(--primary), #818cf8);
+  border-radius: var(--radius-full);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .jobprogress-badge {
-  padding: 0.3rem 0.65rem;
-  border-radius: var(--neo-radius-sm);
-  font-family: var(--font-heading);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  border: 2px solid var(--neo-black);
+  letter-spacing: 0.02em;
 }
 
 .jobprogress-badge.pending {
-  background: #E5E7EB;
-  color: var(--neo-black);
+  background: #f1f5f9;
+  color: #64748b;
 }
 
 .jobprogress-badge.in-progress {
-  background: var(--neo-yellow);
-  color: var(--neo-black);
+  background: #fef3c7;
+  color: #d97706;
 }
 
 .jobprogress-badge.completed {
-  background: var(--neo-mint);
-  color: var(--neo-black);
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .jobprogress-date {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .jobprogress-controls {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .jobprogress-slider-wrap {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .jobprogress-slider-wrap span:first-child {
   font-family: var(--font-heading);
   font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--neo-black);
+  font-weight: 600;
+  color: var(--text-main);
   min-width: 60px;
 }
 
 .jobprogress-slider-wrap input[type="range"] {
   flex: 1;
-  height: 8px;
-  accent-color: var(--neo-blue);
+  height: 6px;
+  accent-color: var(--primary);
   cursor: pointer;
 }
 
 .jobprogress-slider-wrap span:last-child {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--neo-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
   min-width: 40px;
 }
 
@@ -303,34 +293,29 @@
 }
 
 .jobprogress-status-btn {
-  padding: 0.5rem 0.85rem;
-  border-radius: var(--neo-radius-sm);
-  border: var(--neo-border-thin);
-  background: #fff;
-  color: var(--neo-black);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  border: var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-muted);
   font-family: var(--font-heading);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--neo-shadow-sm);
-  transition: all 0.1s ease;
+  transition: all 0.2s ease;
   text-transform: capitalize;
 }
 
 .jobprogress-status-btn:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--neo-black);
-}
-
-.jobprogress-status-btn:active:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: var(--neo-shadow-pressed);
+  color: var(--text-main);
+  border-color: var(--primary);
 }
 
 .jobprogress-status-btn.active {
-  background: var(--neo-blue);
-  border-color: var(--neo-black);
+  background: var(--primary);
+  border-color: var(--primary);
   color: white;
+  box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .jobprogress-status-btn:disabled {
@@ -340,18 +325,17 @@
 
 @media (max-width: 640px) {
   .jobprogress-main {
-    padding: 1.25rem 0.875rem 2rem;
+    padding: 6rem 1rem 3rem;
   }
 
   .jobprogress-main h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 2rem;
   }
 
   .jobprogress-create,
   .jobprogress-list,
   .jobprogress-card {
-    padding: 1.25rem;
+    padding: 1.5rem;
   }
 
   .jobprogress-submit {
@@ -365,23 +349,8 @@
     align-items: flex-start;
   }
 
-  .jobprogress-meta {
-    flex-wrap: wrap;
-  }
-
   .jobprogress-slider-wrap {
     flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .jobprogress-slider-wrap span:first-child,
-  .jobprogress-slider-wrap span:last-child {
-    min-width: auto;
-  }
-
-  .jobprogress-slider-wrap input[type="range"] {
-    width: 100%;
-    flex-basis: 100%;
   }
 
   .jobprogress-status-btns {

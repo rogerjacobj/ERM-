@@ -57,12 +57,12 @@ const Home = () => {
           initial="hidden"
           animate="show"
         >
-          <motion.p variants={itemVariants} className="home-tagline">
-            ✦ Bridge the gap between employees and HR
-          </motion.p>
+          <motion.div variants={itemVariants} className="home-tagline">
+            <span className="animate-pulse">✦</span> Bridge the gap between employees and HR
+          </motion.div>
 
           <motion.h1 variants={itemVariants} className="home-heading">
-            Elevate Your Communication Through our web
+            Elevate Your <span className="title-gradient">Communication</span>
           </motion.h1>
 
           <motion.div variants={itemVariants} className="home-heading-accent min-h-[5rem] relative">
@@ -71,7 +71,7 @@ const Home = () => {
 
           <motion.p variants={itemVariants} className="home-quote">
             A small act of <span className="text-highlight">improvement</span> is a big{' '}
-            <span className="text-highlight">difference</span> in someone's work life. Let's make it happen.
+            <span className="text-highlight">difference</span> in someone's work life. Let's make it happen together.
           </motion.p>
 
           <motion.div variants={itemVariants} className="home-cta">
@@ -82,9 +82,9 @@ const Home = () => {
 
         <motion.div
           className="home-hero-visual"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4, type: "spring" }}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
         >
           <img
             src={Bros}
@@ -104,18 +104,19 @@ const Home = () => {
         variants={sectionVariants}
       >
         <div className="mission-hero text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">🚀 Our Mission</h2>
+          <h2 className="title-gradient">Our Mission</h2>
           <p className="mission-lead text-xl max-w-2xl mx-auto">
-            Empowering meaningful communication between employees and HR
+            Empowering meaningful communication between employees and HR through transparency and trust.
           </p>
         </div>
         
-        <div className="mission-content grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
+        <div className="mission-content">
           <motion.div 
-            className="mission-card neo-card neo-card-yellow p-8"
-            whileHover={{ y: -8, rotate: -1 }}
+            className="mission-card"
+            whileHover={{ y: -10 }}
           >
-            <h3 className="text-2xl font-bold mb-4">🤝 Bridge the gap</h3>
+            <div className="text-4xl mb-4">🤝</div>
+            <h3>Bridge the gap</h3>
             <p>
               We believe every voice matters. Our platform creates a direct channel for 
               workplace conversations—from feedback and concerns to celebrations and ideas.
@@ -123,10 +124,11 @@ const Home = () => {
           </motion.div>
           
           <motion.div 
-            className="mission-card neo-card neo-card-mint p-8"
-            whileHover={{ y: -8, rotate: 1 }}
+            className="mission-card"
+            whileHover={{ y: -10 }}
           >
-            <h3 className="text-2xl font-bold mb-4">🔒 Transparency & trust</h3>
+            <div className="text-4xl mb-4">🔒</div>
+            <h3>Transparency & trust</h3>
             <p>
               Building trust through clear processes. Employees can submit tickets, 
               track resolutions, and HR can respond quickly and consistently.
@@ -134,10 +136,11 @@ const Home = () => {
           </motion.div>
           
           <motion.div 
-            className="mission-card neo-card neo-card-pink p-8"
-            whileHover={{ y: -8, rotate: -1 }}
+            className="mission-card"
+            whileHover={{ y: -10 }}
           >
-            <h3 className="text-2xl font-bold mb-4">🎯 One platform, all needs</h3>
+            <div className="text-4xl mb-4">🎯</div>
+            <h3>One platform, all needs</h3>
             <p>
               Events, ticketing, announcements, and dashboards—everything your team 
               needs to stay connected and productive in one place.
@@ -156,20 +159,24 @@ const Home = () => {
         variants={sectionVariants}
       >
         <div className="blog-hero text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">📰 Latest Updates</h2>
-          <p className="blog-lead text-xl">News, tips, and insights from our team</p>
+          <h2 className="title-gradient">Latest Updates</h2>
+          <p className="blog-lead">News, tips, and insights from our team</p>
         </div>
 
-        <div className="blog-grid grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
+        <div className="blog-grid">
           {blogPosts.map((post, index) => (
             <motion.article 
               key={post.id} 
-              className={`blog-card neo-card ${index === 0 ? 'neo-card-lavender' : index === 1 ? 'neo-card-mint' : 'neo-card-orange'} p-6`}
-              whileHover={{ scale: 1.03, rotate: index % 2 === 0 ? -1 : 1 }}
+              className="blog-card"
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
             >
-              <time className="blog-date text-sm mb-2 block">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
-              <h3 className="blog-title text-xl font-bold mb-3">{post.title}</h3>
-              <p className="blog-excerpt text-sm line-clamp-3">{post.excerpt}</p>
+              <span className="blog-date">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <h3 className="blog-title">{post.title}</h3>
+              <p className="blog-excerpt">{post.excerpt}</p>
             </motion.article>
           ))}
         </div>

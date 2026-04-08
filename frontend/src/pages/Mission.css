@@ -1,76 +1,83 @@
 /* ═══════════════════════════════
-   NEOBRUTALISM MISSION PAGE
+   PROFESSIONAL MISSION SECTION
    ═══════════════════════════════ */
 
 .mission-page {
   flex: 1;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
+  padding: 6rem 1.5rem;
 }
 
 .mission-hero {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
-.mission-hero h1 {
+.mission-hero h2 {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.75rem;
+  color: var(--text-main);
+  margin: 0 0 1rem;
 }
 
 .mission-lead {
-  font-size: 1.125rem;
-  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  color: var(--text-muted);
   margin: 0;
-  max-width: 36ch;
+  max-width: 60ch;
   margin-inline: auto;
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .mission-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
 .mission-card {
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  padding: 1.5rem 1.75rem;
-  box-shadow: var(--neo-shadow);
-  transition: all 0.15s ease;
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.mission-card:nth-child(1) { background: var(--neo-yellow); }
-.mission-card:nth-child(2) { background: #D1FAE5; }
-.mission-card:nth-child(3) { background: #FCE7F3; }
-
-.dark .mission-card:nth-child(1) { background: #3D3500; }
-.dark .mission-card:nth-child(2) { background: #1A3D2E; }
-.dark .mission-card:nth-child(3) { background: #3D1A2E; }
 
 .mission-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow-hover);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
 }
 
-.mission-card h2,
 .mission-card h3 {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--neo-black);
-  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 1rem;
 }
 
 .mission-card p {
   margin: 0;
-  color: var(--neo-black);
-  line-height: 1.6;
-  font-weight: 500;
-  opacity: 0.85;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .mission-page {
+    padding: 4rem 1.5rem;
+  }
+  
+  .mission-hero h2 {
+    font-size: 2.25rem;
+  }
+  
+  .mission-lead {
+    font-size: 1.1rem;
+  }
 }

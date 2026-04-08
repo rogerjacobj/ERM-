@@ -7,46 +7,39 @@
 
 :root {
   /* ═══════════════════════════════
-     NEOBRUTALISM DESIGN TOKENS
+     PROFESSIONAL DESIGN TOKENS
      ═══════════════════════════════ */
 
-  /* Core palette */
-  --neo-yellow: #FFE600;
-  --neo-blue: #4F46E5;
-  --neo-pink: #FF4D8D;
-  --neo-mint: #00F5D4;
-  --neo-orange: #FF6B35;
-  --neo-lavender: #C4B5FD;
-  --neo-lime: #A3E635;
-  --neo-red: #EF4444;
-  --neo-white: #FFFDF7;
-  --neo-black: #1A1A1A;
+  /* Core palette - Sophisticated Indigo/Slate */
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-glow: rgba(99, 102, 241, 0.4);
+  
+  --secondary: #64748b;
+  --accent: #f43f5e;
+  
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-half: rgba(255, 255, 255, 0.7);
+  
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
 
-  /* Functional tokens */
-  --color-bg: #FFFDF7;
-  --color-text: #1A1A1A;
-  --color-text-muted: #4A4A4A;
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-success: #10B981;
-  --color-danger: #EF4444;
-
-  /* Card/elevated bg */
-  --color-card-bg: #fff;
-
-  /* Borders & Shadows (hard, no blur) */
-  --neo-border: 3px solid #1A1A1A;
-  --neo-border-thin: 2px solid #1A1A1A;
-  --neo-shadow: 4px 4px 0px #1A1A1A;
-  --neo-shadow-sm: 2px 2px 0px #1A1A1A;
-  --neo-shadow-lg: 6px 6px 0px #1A1A1A;
-  --neo-shadow-hover: 6px 6px 0px #1A1A1A;
-  --neo-shadow-pressed: 1px 1px 0px #1A1A1A;
+  /* Borders & Shadows - Soft and Subtle */
+  --border-subtle: 1px solid rgba(0, 0, 0, 0.08);
+  --border-glow: 2px solid rgba(99, 102, 241, 0.2);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
   /* Radius */
-  --neo-radius: 12px;
-  --neo-radius-sm: 8px;
-  --neo-radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
 
   /* Typography */
   --font-heading: 'Space Grotesk', sans-serif;
@@ -54,24 +47,18 @@
 }
 
 /* ═══════════════════════════════
-   DARK MODE (Neobrutalism Dark)
+   DARK MODE (Professional Dark)
    ═══════════════════════════════ */
 .dark {
-  --color-bg: #1A1A1A;
-  --color-text: #F5F5F5;
-  --color-text-muted: #AAAAAA;
-  --color-card-bg: #2D2D2D;
-  --neo-black: #F5F5F5;
-  --neo-white: #1A1A1A;
-
-  /* Shadows use lighter color in dark mode */
-  --neo-border: 3px solid #F5F5F5;
-  --neo-border-thin: 2px solid #888;
-  --neo-shadow: 4px 4px 0px #555;
-  --neo-shadow-sm: 2px 2px 0px #555;
-  --neo-shadow-lg: 6px 6px 0px #555;
-  --neo-shadow-hover: 6px 6px 0px #666;
-  --neo-shadow-pressed: 1px 1px 0px #444;
+  --bg-main: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-half: rgba(30, 41, 59, 0.7);
+  
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* ═══════════════════════
@@ -79,18 +66,18 @@
    ═══════════════════════ */
 
 html, body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   margin: 0;
   padding: 0;
   min-height: 100vh;
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 #root {
@@ -103,79 +90,82 @@ html, body {
 *::before,
 *::after {
   box-sizing: border-box;
-  cursor: none !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
-@media (max-width: 640px) {
-  html, body {
-    font-size: 15px;
-  }
+/* Custom Selection Color */
+::selection {
+  background: var(--primary);
+  color: white;
 }
 
 /* ═══════════════════════════
-   NEOBRUTALISM UTILITY CLASSES
+   PREMIUM UTILITY CLASSES
    ═══════════════════════════ */
 
-.neo-card {
-  background: var(--color-card-bg);
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  box-shadow: var(--neo-shadow);
-  padding: 1.5rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.premium-card, .neo-card {
+  background: var(--bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.neo-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow-hover);
+.premium-card:hover, .neo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
-.neo-card-yellow {
-  background: var(--neo-yellow);
-}
-.dark .neo-card-yellow {
-  background: #3D3500;
-  color: var(--neo-yellow);
-}
-
-.neo-card-blue {
-  background: #DBEAFE;
-}
-.dark .neo-card-blue {
-  background: #1E2A4A;
+.glass-panel {
+  background: var(--bg-surface-half);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
 }
 
-.neo-card-pink {
-  background: #FCE7F3;
-}
-.dark .neo-card-pink {
-  background: #3D1A2E;
-}
-
-.neo-card-mint {
-  background: #D1FAE5;
-}
-.dark .neo-card-mint {
-  background: #1A3D2E;
+.title-gradient {
+  background: linear-gradient(135deg, var(--primary), #818cf8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
-.neo-card-lavender {
-  background: var(--neo-lavender);
-}
-.dark .neo-card-lavender {
-  background: #2E2650;
+/* Buttons */
+.btn-premium {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  background: var(--primary);
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 14px 0 var(--primary-glow);
 }
 
-.neo-card-orange {
-  background: #FED7AA;
+.btn-premium:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 var(--primary-glow);
 }
-.dark .neo-card-orange {
-  background: #3D2A1A;
+
+.btn-premium:active {
+  transform: translateY(1px);
 }
 
 /* ═══════════════════════════
@@ -209,33 +199,25 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes neo-press {
-  0% { transform: translate(0, 0); box-shadow: var(--neo-shadow); }
-  50% { transform: translate(2px, 2px); box-shadow: var(--neo-shadow-pressed); }
-  100% { transform: translate(0, 0); box-shadow: var(--neo-shadow); }
-}
-
-@keyframes neo-bounce {
+@keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes neo-wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
+  50% { transform: translateY(-10px); }
 }
 
 .animate-fade-up {
-  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease forwards;
+  animation: fadeIn 0.6s ease forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* Stagger utilities */
@@ -244,16 +226,3 @@ h1, h2, h3, h4, h5, h6 {
 .delay-300 { animation-delay: 300ms; opacity: 0; }
 .delay-400 { animation-delay: 400ms; opacity: 0; }
 .delay-500 { animation-delay: 500ms; opacity: 0; }
-
-/* Legacy glass-panel → now neo-card alias for backward compat */
-.glass-panel {
-  background: var(--color-card-bg);
-  border: var(--neo-border);
-  border-radius: var(--neo-radius);
-  box-shadow: var(--neo-shadow);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.glass-panel:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--neo-shadow-hover);
-}
