@@ -15,6 +15,9 @@ app.use(cors({ origin: true }));
 // Simple health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Root health check for Render
+app.get('/', (req, res) => res.send('ERM Backend is Online!'));
+
 // Mock login endpoint for local development and frontend testing
 // Accepts { email, password, role } and returns a simple token + user
 app.post('/api/login', async (req, res) => {
@@ -482,15 +485,18 @@ app.patch('/api/jobs/:id', ensureAuth, async (req, res) => {
     }
 })
 
-// Start server after DB connected & optionally seeded
+// Start server immediately (required for Render health checks to pass quickly)
 const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Visit https://erm-3.onrender.com to check status`);
+});
+
+// Connect to DB in background
 connectAndSeed()
     .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`)
-        })
+        console.log('Database initialization complete.');
     })
     .catch(err => {
-        console.error('Failed to connect to DB before starting server:', err)
-        process.exit(1)
-    })
+        console.error('Failed to connect to DB:', err);
+    });
