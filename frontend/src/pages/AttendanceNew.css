@@ -1,0 +1,367 @@
+/* ATTENDANCE UPGRADE — Calendar + Monthly Summary */
+
+.att-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f1f5f9;
+}
+
+.att-content {
+  flex: 1;
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.att-content.collapsed { margin-left: 72px; }
+
+.att-page-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Today panel ─────────────────────── */
+.att-today-panel {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.att-today-panel::after {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 180px; height: 180px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 50%;
+}
+
+.att-today-clock {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.att-today-date {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.3rem;
+}
+
+.att-divider {
+  width: 1px;
+  height: 60px;
+  background: rgba(255,255,255,0.2);
+}
+
+.att-action-area { flex: 1; }
+
+.att-action-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 0.75rem;
+}
+
+.att-action-status strong { color: white; }
+
+.att-btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.att-btn-primary {
+  padding: 0.65rem 1.5rem;
+  background: white;
+  color: #6366f1;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.att-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.att-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.att-btn-danger {
+  padding: 0.65rem 1.5rem;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.att-btn-danger:hover { background: rgba(255,255,255,0.25); }
+
+.att-done-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.att-notes-inline {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  resize: none;
+  outline: none;
+  font-family: var(--font-body);
+  margin-bottom: 0.75rem;
+}
+
+.att-notes-inline::placeholder { color: rgba(255,255,255,0.6); }
+
+/* ── Summary chips ───────────────────── */
+.att-summary-chips {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.att-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.att-chip-p { background: rgba(99,102,241,0.1); color: #6366f1; }
+.att-chip-a { background: rgba(244,63,94,0.1); color: #f43f5e; }
+.att-chip-l { background: rgba(245,158,11,0.1); color: #d97706; }
+.att-chip-c { background: rgba(16,185,129,0.1); color: #059669; }
+
+/* ── Layout ──────────────────────────── */
+.att-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) { .att-grid { grid-template-columns: 1fr; } }
+
+/* ── Calendar card ───────────────────── */
+.att-cal-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.att-cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.att-cal-nav h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.att-cal-arrow {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.att-cal-arrow:hover { background: #6366f1; color: white; border-color: #6366f1; }
+
+.att-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.att-cal-day-hdr {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-align: center;
+  padding: 0.35rem 0;
+  text-transform: uppercase;
+}
+
+.att-cal-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: default;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.att-cal-cell.present { background: rgba(99,102,241,0.1); color: #6366f1; }
+.att-cal-cell.absent  { background: rgba(244,63,94,0.1); color: #f43f5e; }
+.att-cal-cell.leave   { background: rgba(245,158,11,0.1); color: #d97706; }
+.att-cal-cell.empty   { background: transparent; }
+.att-cal-cell.today   { background: #6366f1; color: white; box-shadow: 0 2px 8px rgba(99,102,241,0.4); }
+
+/* ── Legend ──────────────────────────── */
+.att-legend {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.att-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.att-legend-dot {
+  width: 10px; height: 10px; border-radius: 3px;
+}
+
+/* ── Records card ────────────────────── */
+.att-records-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.att-records-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.att-records-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.att-filter-input {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  outline: none;
+  color: #334155;
+  background: #f8fafc;
+  width: 180px;
+  transition: all 0.2s;
+}
+
+.att-filter-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+
+.att-records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.att-records-list::-webkit-scrollbar { width: 4px; }
+.att-records-list::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+.att-records-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+.att-record-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.att-record-row:hover { background: #f1f5f9; }
+
+.att-record-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.75rem; color: white; flex-shrink: 0;
+}
+
+.att-record-info { flex: 1; min-width: 0; }
+
+.att-record-name {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.att-record-time { font-size: 0.72rem; color: #94a3b8; margin-top: 1px; }
+
+.att-record-badge {
+  display: inline-flex;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.att-record-badge.complete { background: rgba(16,185,129,0.12); color: #059669; }
+.att-record-badge.active   { background: rgba(245,158,11,0.12); color: #d97706; }
+
+.att-empty { text-align:center; color:#94a3b8; padding:2rem; font-size:0.875rem; }
+
+@media (max-width: 768px) {
+  .att-content { margin-left: 72px; }
+  .att-page-body { padding: 1rem; }
+  .att-today-panel { flex-direction: column; gap: 1rem; }
+  .att-divider { display: none; }
+}

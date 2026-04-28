@@ -1,0 +1,152 @@
+/* Emergency complaint styles — kept for compatibility */
+
+.emergency-quota-card { position: relative; }
+.emergency-quota-card.limit-reached { border-color: rgba(244,63,94,0.3) !important; }
+
+.emergency-quota-display {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.quota-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.quota-dot.available { background: rgba(99,102,241,0.2); border-color: #6366f1; }
+.quota-dot.used      { background: #f43f5e; border-color: #f43f5e; }
+
+.emergency-stat { color: #f43f5e !important; }
+
+.stat-suffix { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
+
+.reset-timer { color: #f43f5e; font-weight: 600; font-size: 0.8rem; }
+
+.emergency-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(244,63,94,0.3);
+  background: transparent;
+  color: #f43f5e;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emergency-toggle:hover { background: rgba(244,63,94,0.08); }
+.emergency-toggle.active { background: #f43f5e; color: white; border-color: #f43f5e; }
+.emergency-toggle:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.toggle-icon { font-size: 0.9rem; }
+
+.emergency-badge-inline {
+  background: rgba(255,255,255,0.2);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+}
+
+.emergency-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius-md);
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+  color: #92400e;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.emergency-notice.limit {
+  background: rgba(244,63,94,0.08);
+  border-color: rgba(244,63,94,0.2);
+  color: #9f1239;
+}
+
+.emergency-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #f43f5e;
+  letter-spacing: 0.06em;
+  margin-right: 0.25rem;
+}
+
+.emergency-ticket {
+  border-left: 3px solid #f43f5e !important;
+}
+
+.complaint-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ticket-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding-bottom: 0.75rem;
+}
+
+.tab-btn {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover { background: rgba(99,102,241,0.08); color: var(--primary); }
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 0.3rem;
+}
+
+.tab-count.emergency { background: rgba(244,63,94,0.2); color: #f43f5e; }
+.tab-btn.active .tab-count { background: rgba(255,255,255,0.25); }
+
+.emergency-quota-mini { }
+.quota-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.35rem; }
+.quota-bar { height: 6px; background: rgba(0,0,0,0.06); border-radius: 999px; overflow: hidden; margin-bottom: 0.35rem; }
+.quota-bar-fill { height: 100%; background: linear-gradient(to right, #6366f1, #818cf8); border-radius: 999px; transition: width 0.5s ease; }
+.quota-text { font-size: 0.78rem; color: var(--text-muted); }
+.reset-timer-small { color: #f43f5e; font-weight: 600; }
+
+.emergency-submit { background: #f43f5e !important; box-shadow: 0 4px 12px rgba(244,63,94,0.3) !important; }
+.emergency-submit:hover:not(:disabled) { background: #e11d48 !important; box-shadow: 0 6px 16px rgba(244,63,94,0.4) !important; }

@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════
+   SIDEBAR — Premium Dark Glass
+   ═══════════════════════════════════════ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+}
+
+/* ── Logo ────────────────────────────── */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem 1rem;
+  min-height: 72px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-logo-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: white;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+}
+
+.sidebar-logo-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.logo-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+/* ── Collapse button ─────────────────── */
+.sidebar-collapse-btn {
+  position: absolute;
+  top: 20px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  color: #64748b;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.sidebar-collapse-btn:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+/* ── Section label ───────────────────── */
+.sidebar-section-label {
+  padding: 1.25rem 1rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #475569;
+  white-space: nowrap;
+}
+
+/* ── Nav ─────────────────────────────── */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.5rem;
+  gap: 0.25rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-nav::-webkit-scrollbar { width: 0; }
+
+.sidebar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem;
+  border-radius: 10px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-link:hover {
+  background: rgba(99,102,241,0.1);
+  color: #e2e8f0;
+}
+
+.sidebar-link.active {
+  background: rgba(99,102,241,0.15);
+  color: #818cf8;
+}
+
+.sidebar-link-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 22px;
+  text-align: center;
+  filter: grayscale(0.3);
+}
+
+.sidebar-link.active .sidebar-link-icon {
+  filter: none;
+}
+
+.sidebar-link-label {
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+.sidebar-active-pill {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: linear-gradient(to bottom, #6366f1, #818cf8);
+  border-radius: 2px 0 0 2px;
+}
+
+/* ── Footer ──────────────────────────── */
+.sidebar-footer {
+  padding: 0.75rem 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sidebar-avatar {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.sidebar-user-info {
+  overflow: hidden;
+}
+
+.sidebar-user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-size: 0.65rem;
+  color: #6366f1;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  margin-top: 1px;
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(244,63,94,0.2);
+  color: #f43f5e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-heading);
+  white-space: nowrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar-logout:hover {
+  background: rgba(244,63,94,0.1);
+  border-color: #f43f5e;
+}
+
+/* ── Collapsed state ─────────────────── */
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.sidebar.collapsed .sidebar-logo {
+  justify-content: center;
+  padding: 1rem 0.5rem;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  align-items: center;
+}
+
+.sidebar.collapsed .sidebar-logout {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
