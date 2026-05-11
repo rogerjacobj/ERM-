@@ -98,7 +98,9 @@ const EmployeeDashboardNew = () => {
             <p>Welcome back, {user?.name || user?.email || 'Employee'}</p>
           </div>
           <div className="topbar-right">
-            <Link to="/notifications" className="topbar-icon-btn" title="Notifications">🔔</Link>
+            <Link to="/notifications" className="topbar-icon-btn" title="Notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </Link>
             <Link to="/employee-profile" className="topbar-avatar" title="My Profile">
               {(user?.name || user?.email || 'E')[0].toUpperCase()}
             </Link>
@@ -109,11 +111,11 @@ const EmployeeDashboardNew = () => {
           {/* Stat cards */}
           <motion.div className="stat-cards-grid" variants={containerV}>
             {[
-              { icon:'📋', label:'Total Tickets',      value: loading?'…':tickets.length,                       cls:'icon-indigo', change:'All time' },
-              { icon:'🔓', label:'Open',               value: loading?'…':tickets.filter(t=>t.status==='open').length, cls:'icon-amber', change:'Needs attention' },
-              { icon:'⚙️', label:'In Progress',        value: loading?'…':tickets.filter(t=>t.status==='in-progress').length, cls:'icon-violet', change:'Being handled' },
-              { icon:'✅', label:'Resolved',            value: loading?'…':tickets.filter(t=>t.status==='resolved').length, cls:'icon-emerald', change:'Completed' },
-              { icon:'🚨', label:'Emergency Quota',    value: `${emergencyStatus.remaining}/${emergencyStatus.limit}`, cls:'icon-rose', change: limitReached ? formatResetTimer(emergencyStatus.resetAt)||'Limit reached' : 'Available' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>), label:'Total Tickets',   value: loading?'–':tickets.length,                       cls:'icon-indigo', change:'All time' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>), label:'Open',               value: loading?'–':tickets.filter(t=>t.status==='open').length, cls:'icon-amber', change:'Needs attention' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M20 12h2M2 12h2M12 20v2M12 2v2"/></svg>), label:'In Progress',        value: loading?'–':tickets.filter(t=>t.status==='in-progress').length, cls:'icon-violet', change:'Being handled' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>), label:'Resolved',            value: loading?'–':tickets.filter(t=>t.status==='resolved').length, cls:'icon-emerald', change:'Completed' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>), label:'Emergency Quota',    value: `${emergencyStatus.remaining}/${emergencyStatus.limit}`, cls:'icon-rose', change: limitReached ? formatResetTimer(emergencyStatus.resetAt)||'Limit reached' : 'Available' },
             ].map((c,i) => (
               <motion.div key={i} className="stat-card" variants={itemV}>
                 <div className={`stat-card-icon ${c.cls}`}>{c.icon}</div>
@@ -138,7 +140,7 @@ const EmployeeDashboardNew = () => {
                       style={{ padding:'0.4rem 0.9rem', borderRadius:'8px', border:'none', fontFamily:'var(--font-heading)', fontWeight:600, fontSize:'0.8rem', cursor:'pointer', transition:'all 0.2s',
                         background: activeTab===tab ? '#6366f1' : '#f1f5f9',
                         color: activeTab===tab ? '#fff' : '#64748b' }}>
-                      {tab === 'normal' ? `Complaints (${tickets.length})` : `🚨 Emergency (${emergencyComplaints.length})`}
+                      {tab === 'normal' ? `Complaints (${tickets.length})` : `Emergency (${emergencyComplaints.length})`}
                     </button>
                   ))}
                 </div>
@@ -154,7 +156,7 @@ const EmployeeDashboardNew = () => {
                 {activeTab === 'normal' && (
                   <motion.div key="normal" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
                     <div style={{ display:'flex', flexDirection:'column', gap:'0.65rem', marginTop:'1rem' }}>
-                      {filteredTickets.length === 0 && <div className="empty-state"><div className="empty-state-icon">🎉</div>No complaints yet</div>}
+                      {filteredTickets.length === 0 && <div className="empty-state"><div className="empty-state-icon">—</div>No complaints yet</div>}
                       <AnimatePresence>
                         {filteredTickets.map(t => (
                           <motion.div key={t.id} layout initial={{opacity:0,x:-8}} animate={{opacity:1,x:0}} exit={{opacity:0,scale:0.95}}
@@ -174,14 +176,14 @@ const EmployeeDashboardNew = () => {
                 {activeTab === 'emergency' && (
                   <motion.div key="emergency" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
                     <div style={{ display:'flex', flexDirection:'column', gap:'0.65rem', marginTop:'1rem' }}>
-                      {emergencyComplaints.length === 0 && <div className="empty-state"><div className="empty-state-icon">🛡</div>No emergency complaints</div>}
+                      {emergencyComplaints.length === 0 && <div className="empty-state"><div className="empty-state-icon">—</div>No emergency complaints</div>}
                       <AnimatePresence>
                         {emergencyComplaints.map(c => (
                           <motion.div key={c.id} layout initial={{opacity:0,x:-8}} animate={{opacity:1,x:0}} exit={{opacity:0,scale:0.95}}
                             style={{ padding:'0.9rem 1rem', background:'#fff1f2', borderRadius:'12px', borderLeft:'3px solid #f43f5e' }}>
                             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
                               <div>
-                                <span style={{ fontSize:'0.7rem', fontWeight:800, color:'#f43f5e', letterSpacing:'0.06em', display:'block', marginBottom:3 }}>🚨 EMERGENCY</span>
+                                <span style={{ fontSize:'0.7rem', fontWeight:800, color:'#f43f5e', letterSpacing:'0.06em', display:'block', marginBottom:3 }}>EMERGENCY</span>
                                 <div style={{ fontWeight:700, fontSize:'0.875rem', color:'#0f172a' }}>{c.title}</div>
                               </div>
                               <span className={`status-badge status-${(c.status||'open').replace(/\s+/g,'-')}`}>{c.status||'open'}</span>
@@ -213,7 +215,7 @@ const EmployeeDashboardNew = () => {
                     style={{ display:'flex', flexDirection:'column', gap:'0.75rem', marginTop:'1rem', overflow:'hidden' }}>
                     {/* Emergency toggle */}
                     <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', padding:'0.75rem', background: isEmergency?'#fff1f2':'#f8fafc', borderRadius:'10px', border:`1px solid ${isEmergency?'rgba(244,63,94,0.2)':'rgba(0,0,0,0.06)'}` }}>
-                      <span style={{ fontSize:'1.1rem' }}>{isEmergency?'🚨':'📋'}</span>
+                      <span style={{ fontSize:'1.1rem' }}>{isEmergency ? '!' : '+'}</span>
                       <div style={{ flex:1 }}>
                         <div style={{ fontSize:'0.82rem', fontWeight:700, color: isEmergency?'#f43f5e':'#334155' }}>{isEmergency ? 'Emergency Complaint' : 'Normal Complaint'}</div>
                         {isEmergency && <div style={{ fontSize:'0.72rem', color:'#94a3b8', marginTop:2 }}>{emergencyStatus.remaining} of {emergencyStatus.limit} remaining</div>}
@@ -234,7 +236,7 @@ const EmployeeDashboardNew = () => {
                       style={{ padding:'0.7rem 0.9rem', border:'1px solid #e2e8f0', borderRadius:'10px', fontSize:'0.875rem', outline:'none', color:'#0f172a', resize:'vertical', fontFamily:'var(--font-body)' }} />
                     <button type="submit" disabled={submitting}
                       style={{ padding:'0.8rem', background: isEmergency?'#f43f5e':'#6366f1', color:'#fff', border:'none', borderRadius:'10px', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.875rem', cursor:'pointer', opacity: submitting?0.6:1 }}>
-                      {submitting ? 'Submitting…' : isEmergency ? '🚨 Submit Emergency' : 'Submit Complaint'}
+                      {submitting ? 'Submitting…' : isEmergency ? 'Submit Emergency' : 'Submit Complaint'}
                     </button>
                   </motion.form>
                 )}
@@ -244,9 +246,9 @@ const EmployeeDashboardNew = () => {
               {!formOpen && (
                 <div style={{ marginTop:'0.75rem', display:'flex', flexDirection:'column', gap:'0.65rem' }}>
                   {[
-                    { icon:'📋', label:'Normal complaints', desc:'Submit anytime, no limit.', color:'#e0e7ff' },
-                    { icon:'🚨', label:'Emergency complaints', desc:`${emergencyStatus.remaining}/${emergencyStatus.limit} remaining — reset every 14 days.`, color:'#fee2e2' },
-                    { icon:'📊', label:'Track progress', desc:'Monitor all your tickets in real-time.', color:'#dcfce7' },
+                    { icon:'\u2192', label:'Normal complaints', desc:'Submit anytime, no limit.', color:'#e0e7ff' },
+                    { icon:'!', label:'Emergency complaints', desc:`${emergencyStatus.remaining}/${emergencyStatus.limit} remaining — reset every 14 days.`, color:'#fee2e2' },
+                    { icon:'\u2197', label:'Track progress', desc:'Monitor all your tickets in real-time.', color:'#dcfce7' },
                   ].map((item,i) => (
                     <div key={i} style={{ display:'flex', gap:'0.75rem', padding:'0.85rem', background:'#f8fafc', borderRadius:'12px', alignItems:'flex-start' }}>
                       <div style={{ width:36, height:36, borderRadius:'8px', background:item.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', flexShrink:0 }}>{item.icon}</div>
@@ -257,7 +259,7 @@ const EmployeeDashboardNew = () => {
                     </div>
                   ))}
                   <Link to="/employee-profile" style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem', padding:'0.75rem', background:'linear-gradient(135deg,#6366f1,#8b5cf6)', color:'#fff', borderRadius:'12px', textDecoration:'none', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'0.875rem', marginTop:'0.25rem' }}>
-                    👤 View My Profile
+                    View My Profile
                   </Link>
                 </div>
               )}

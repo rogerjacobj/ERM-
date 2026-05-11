@@ -13,9 +13,9 @@ function decodeToken() {
 }
 
 const STATUS_CONFIG = {
-  pending:     { color:'#94a3b8', bg:'rgba(148,163,184,0.12)', label:'Pending',     icon:'⏳' },
-  'in-progress':{ color:'#f59e0b', bg:'rgba(245,158,11,0.12)',  label:'In Progress', icon:'⚙️' },
-  completed:   { color:'#10b981', bg:'rgba(16,185,129,0.12)',  label:'Completed',   icon:'✅' },
+  pending:     { color:'#94a3b8', bg:'rgba(148,163,184,0.12)', label:'Pending',     icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>) },
+  'in-progress':{ color:'#f59e0b', bg:'rgba(245,158,11,0.12)',  label:'In Progress', icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M20 12h2M2 12h2M12 20v2M12 2v2"/></svg>) },
+  completed:   { color:'#10b981', bg:'rgba(16,185,129,0.12)',  label:'Completed',   icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>) },
 }
 
 const JobProgress = () => {
@@ -90,10 +90,10 @@ const JobProgress = () => {
   const filteredJobs = filterStatus === 'all' ? jobs : jobs.filter(j => j.status === filterStatus)
 
   const stats = [
-    { label:'Total Jobs',   value: jobs.length,                                    icon:'📋', cls:'icon-indigo' },
-    { label:'Pending',      value: jobs.filter(j=>j.status==='pending').length,     icon:'⏳', cls:'icon-amber' },
-    { label:'In Progress',  value: jobs.filter(j=>j.status==='in-progress').length, icon:'⚙️', cls:'icon-violet' },
-    { label:'Completed',    value: jobs.filter(j=>j.status==='completed').length,   icon:'✅', cls:'icon-emerald' },
+    { label:'Total Jobs',   value: jobs.length,                                    icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>), cls:'icon-indigo' },
+    { label:'Pending',      value: jobs.filter(j=>j.status==='pending').length,     icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>), cls:'icon-amber' },
+    { label:'In Progress',  value: jobs.filter(j=>j.status==='in-progress').length, icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41"/></svg>), cls:'icon-violet' },
+    { label:'Completed',    value: jobs.filter(j=>j.status==='completed').length,   icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>), cls:'icon-emerald' },
   ]
 
   const cV = { hidden:{opacity:0}, show:{opacity:1,transition:{staggerChildren:0.07}} }
@@ -219,10 +219,10 @@ const JobProgress = () => {
             </div>
 
             {loading ? (
-              <div className="empty-state">⏳ Loading jobs…</div>
+              <div className="empty-state">Loading jobs…</div>
             ) : filteredJobs.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-state-icon">{filterStatus==='completed'?'🏆':'📋'}</div>
+                <div className="empty-state-icon">—</div>
                 {filterStatus==='all' ? 'No jobs assigned yet' : `No ${filterStatus} jobs`}
               </div>
             ) : (

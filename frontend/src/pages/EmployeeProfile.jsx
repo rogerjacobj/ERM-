@@ -26,11 +26,18 @@ const LEAVE_HISTORY = [
 ]
 
 const DOCS = [
-  { name: 'Employment Contract', type: 'PDF', size: '1.2 MB', icon: '📄', color: '#fee2e2' },
-  { name: 'NDA Agreement',       type: 'PDF', size: '0.8 MB', icon: '📋', color: '#e0e7ff' },
-  { name: 'ID Proof (Aadhaar)',  type: 'IMG', size: '0.4 MB', icon: '🪪', color: '#fef3c7' },
-  { name: 'Offer Letter',        type: 'PDF', size: '0.6 MB', icon: '✉️', color: '#dcfce7' },
+  { name: 'Employment Contract', type: 'PDF', size: '1.2 MB', icon: 'doc',  color: '#fee2e2' },
+  { name: 'NDA Agreement',       type: 'PDF', size: '0.8 MB', icon: 'list', color: '#e0e7ff' },
+  { name: 'ID Proof (Aadhaar)',  type: 'IMG', size: '0.4 MB', icon: 'id',   color: '#fef3c7' },
+  { name: 'Offer Letter',        type: 'PDF', size: '0.6 MB', icon: 'mail', color: '#dcfce7' },
 ]
+
+const DOC_ICONS = {
+  doc:  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
+  list: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>,
+  id:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>,
+  mail: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+}
 
 /* ── Attendance calendar helpers ─────────── */
 function buildCalendar(year, month) {
@@ -147,7 +154,7 @@ const EmployeeProfile = () => {
                       { label: 'Role',       value: (user?.role||'employee').toUpperCase() },
                       { label: 'Department', value: user?.department || 'Engineering' },
                       { label: 'Joined',     value: 'Jan 2024' },
-                      { label: 'Status',     value: '🟢 Active' },
+                      { label: 'Status',     value: 'Active' },
                     ].map(f => (
                       <div key={f.label} className="profile-info-item">
                         <label>{f.label}</label>
@@ -190,9 +197,9 @@ const EmployeeProfile = () => {
                     </span>
                   </div>
                   <div className="att-month-summary">
-                    <span className="att-month-chip att-chip-present">✅ Present: {presentCount}</span>
-                    <span className="att-month-chip att-chip-absent">❌ Absent: {absentCount}</span>
-                    <span className="att-month-chip att-chip-leave">🟡 Leave: {leaveCount}</span>
+                    <span className="att-month-chip att-chip-present">Present: {presentCount}</span>
+                    <span className="att-month-chip att-chip-absent">Absent: {absentCount}</span>
+                    <span className="att-month-chip att-chip-leave">Leave: {leaveCount}</span>
                   </div>
                   <div className="att-calendar-grid">
                     {DAYS.map(d => <div key={d} className="att-day-label">{d}</div>)}
@@ -265,7 +272,7 @@ const EmployeeProfile = () => {
                     <div style={{ fontFamily:'var(--font-heading)', fontSize:'4rem', fontWeight:800, color:'#6366f1', lineHeight:1 }}>92%</div>
                     <div style={{ color:'#64748b', fontSize:'0.85rem', marginTop:'0.5rem' }}>Performance Rating</div>
                     <div style={{ display:'flex', gap:'1rem', marginTop:'1.5rem', flexWrap:'wrap', justifyContent:'center' }}>
-                      {['🏆 Top Performer','⚡ Consistent','🌟 Team Player'].map(t => (
+                      {['Top Performer','Consistent','Team Player'].map(t => (
                         <span key={t} style={{ padding:'0.35rem 0.85rem', background:'rgba(99,102,241,0.1)', color:'#6366f1', borderRadius:'999px', fontSize:'0.78rem', fontWeight:600 }}>{t}</span>
                       ))}
                     </div>
@@ -281,12 +288,14 @@ const EmployeeProfile = () => {
                   <div className="doc-list">
                     {DOCS.map((d, i) => (
                       <div key={i} className="doc-item">
-                        <div className="doc-icon" style={{ background: d.color }}>{d.icon}</div>
+                        <div className="doc-icon" style={{ background: d.color }}>{DOC_ICONS[d.icon] || d.icon}</div>
                         <div className="doc-info">
                           <div className="doc-name">{d.name}</div>
                           <div className="doc-meta">{d.type} · {d.size}</div>
                         </div>
-                        <span className="doc-dl" title="Download">⬇</span>
+                        <span className="doc-dl" title="Download">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </span>
                       </div>
                     ))}
                   </div>

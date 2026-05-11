@@ -112,10 +112,10 @@ const HrReports = () => {
             </select>
             {/* Export buttons */}
             <button style={{ padding:'0.5rem 1rem', borderRadius:'10px', border:'1px solid rgba(0,0,0,0.1)', background:'#fff', color:'#334155', fontFamily:'var(--font-heading)', fontWeight:600, fontSize:'0.82rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}>
-              📄 PDF
+              Export PDF
             </button>
             <button style={{ padding:'0.5rem 1rem', borderRadius:'10px', border:'1px solid rgba(0,0,0,0.1)', background:'#fff', color:'#334155', fontFamily:'var(--font-heading)', fontWeight:600, fontSize:'0.82rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}>
-              📊 Excel
+              Export Excel
             </button>
           </div>
         </div>
@@ -124,10 +124,10 @@ const HrReports = () => {
           {/* KPI row */}
           <motion.div className="stat-cards-grid" variants={containerV}>
             {[
-              { icon:'👥', label:'Total Employees',   value:37, change:'+5 this year',  trend:'up',     cls:'icon-indigo' },
-              { icon:'📅', label:'Avg Attendance',    value:'87%', change:'+2% vs last month', trend:'up', cls:'icon-emerald' },
-              { icon:'🎫', label:'Total Tickets',     value:totalTickets, change:'16 resolved', trend:'neutral', cls:'icon-amber' },
-              { icon:'📊', label:'Avg Performance',   value:'91%', change:'Top quartile',  trend:'up',   cls:'icon-rose' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>), label:'Total Employees',   value:37, change:'+5 this year',  trend:'up',     cls:'icon-indigo' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>), label:'Avg Attendance',    value:'87%', change:'+2% vs last month', trend:'up', cls:'icon-emerald' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>), label:'Total Tickets',     value:totalTickets, change:'16 resolved', trend:'neutral', cls:'icon-amber' },
+              { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>), label:'Avg Performance',   value:'91%', change:'Top quartile',  trend:'up',   cls:'icon-rose' },
             ].map((c,i) => (
               <motion.div key={i} className="stat-card" variants={itemV}>
                 <div className={`stat-card-icon ${c.cls}`}>{c.icon}</div>

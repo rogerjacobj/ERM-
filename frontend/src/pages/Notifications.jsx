@@ -4,23 +4,34 @@ import Sidebar from '../components/Sidebar'
 import './hr-dashboard-new.css'
 
 const NOTIFS = [
-  { id:1, icon:'👤', color:'#e0e7ff', title:'New Employee Added', desc:'Alice Johnson joined the Engineering team.', time:'2 min ago', unread:true, type:'info' },
-  { id:2, icon:'✅', color:'#dcfce7', title:'Leave Approved',    desc:"Bob Smith's leave request has been approved.", time:'18 min ago', unread:true, type:'success' },
-  { id:3, icon:'🎫', color:'#fef3c7', title:'New Support Ticket', desc:'Carol White submitted ticket #T-042.', time:'1 hr ago', unread:true, type:'warning' },
-  { id:4, icon:'🔴', color:'#fee2e2', title:'Emergency Complaint', desc:'Dan Brown filed an emergency complaint — urgent review needed.', time:'2 hr ago', unread:false, type:'danger' },
-  { id:5, icon:'📅', color:'#f3e8ff', title:'Attendance Reminder', desc:'3 employees have not clocked in today.', time:'3 hr ago', unread:false, type:'info' },
-  { id:6, icon:'⏱', color:'#e0f2fe', title:'Clock-in Recorded', desc:'Eva Green clocked in at 09:12 AM.', time:'5 hr ago', unread:false, type:'info' },
-  { id:7, icon:'📊', color:'#fce7f3', title:'Monthly Report Ready', desc:'April 2025 HR report is ready for download.', time:'Yesterday', unread:false, type:'info' },
+  { id:1, icon:'user',     color:'#e0e7ff', title:'New Employee Added',  desc:'Alice Johnson joined the Engineering team.',                          time:'2 min ago',  unread:true,  type:'info' },
+  { id:2, icon:'check',   color:'#dcfce7', title:'Leave Approved',       desc:"Bob Smith's leave request has been approved.",                        time:'18 min ago', unread:true,  type:'success' },
+  { id:3, icon:'ticket',  color:'#fef3c7', title:'New Support Ticket',   desc:'Carol White submitted ticket #T-042.',                                time:'1 hr ago',   unread:true,  type:'warning' },
+  { id:4, icon:'alert',   color:'#fee2e2', title:'Emergency Complaint',  desc:'Dan Brown filed an emergency complaint — urgent review needed.',     time:'2 hr ago',   unread:false, type:'danger' },
+  { id:5, icon:'calendar',color:'#f3e8ff', title:'Attendance Reminder',  desc:'3 employees have not clocked in today.',                              time:'3 hr ago',   unread:false, type:'info' },
+  { id:6, icon:'clock',   color:'#e0f2fe', title:'Clock-in Recorded',    desc:'Eva Green clocked in at 09:12 AM.',                                   time:'5 hr ago',   unread:false, type:'info' },
+  { id:7, icon:'report',  color:'#fce7f3', title:'Monthly Report Ready', desc:'April 2025 HR report is ready for download.',                         time:'Yesterday',  unread:false, type:'info' },
 ]
 
 const ACTIVITY_LOG = [
-  { icon:'👤', color:'#e0e7ff', text:'HR added Alice Johnson to Engineering',       time:'Apr 28, 09:00 AM' },
-  { icon:'✅', color:'#dcfce7', text:"Leave approved for Bob Smith (5 days)",        time:'Apr 28, 08:45 AM' },
-  { icon:'🎫', color:'#fef3c7', text:'Ticket #T-042 submitted by Carol White',       time:'Apr 28, 07:30 AM' },
-  { icon:'🔴', color:'#fee2e2', text:'Emergency complaint filed by Dan Brown',        time:'Apr 27, 04:15 PM' },
-  { icon:'📅', color:'#f3e8ff', text:'Attendance report generated for April 2025',   time:'Apr 27, 12:00 PM' },
-  { icon:'🗑', color:'#fce7f3', text:'Employee Frank removed by HR',                  time:'Apr 26, 03:30 PM' },
+  { icon:'user',     color:'#e0e7ff', text:'HR added Alice Johnson to Engineering',      time:'Apr 28, 09:00 AM' },
+  { icon:'check',   color:'#dcfce7', text:'Leave approved for Bob Smith (5 days)',       time:'Apr 28, 08:45 AM' },
+  { icon:'ticket',  color:'#fef3c7', text:'Ticket #T-042 submitted by Carol White',      time:'Apr 28, 07:30 AM' },
+  { icon:'alert',   color:'#fee2e2', text:'Emergency complaint filed by Dan Brown',       time:'Apr 27, 04:15 PM' },
+  { icon:'calendar',color:'#f3e8ff', text:'Attendance report generated for April 2025',  time:'Apr 27, 12:00 PM' },
+  { icon:'trash',   color:'#fce7f3', text:'Employee Frank removed by HR',                 time:'Apr 26, 03:30 PM' },
 ]
+
+const ICON_MAP = {
+  user:     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  check:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>,
+  ticket:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
+  alert:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+  clock:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  report:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+  trash:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>,
+}
 
 const TYPE_COLORS = { info:'#6366f1', success:'#10b981', warning:'#f59e0b', danger:'#f43f5e' }
 
@@ -77,7 +88,7 @@ const Notifications = () => {
                 <AnimatePresence>
                   {filtered.length === 0 && (
                     <div className="empty-state">
-                      <div className="empty-state-icon">🔔</div>
+                      <div className="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="28" height="28"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
                       No notifications
                     </div>
                   )}
@@ -92,7 +103,7 @@ const Notifications = () => {
                         <div style={{ position:'absolute', left:-4, top:'50%', transform:'translateY(-50%)', width:8, height:8, borderRadius:'50%', background: TYPE_COLORS[n.type] }} />
                       )}
                       <div style={{ width:38, height:38, borderRadius:'50%', background:n.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', flexShrink:0 }}>
-                        {n.icon}
+                        {ICON_MAP[n.icon] || n.icon}
                       </div>
                       <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'0.5rem' }}>
@@ -117,7 +128,7 @@ const Notifications = () => {
               <div className="activity-feed">
                 {ACTIVITY_LOG.map((a, i) => (
                   <div key={i} className="activity-item">
-                    <div className="activity-icon" style={{ background:a.color }}>{a.icon}</div>
+                    <div className="activity-icon" style={{ background:a.color }}>{ICON_MAP[a.icon] || a.icon}</div>
                     <div className="activity-body">
                       <div className="activity-text">{a.text}</div>
                       <div className="activity-time">{a.time}</div>

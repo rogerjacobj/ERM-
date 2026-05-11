@@ -171,10 +171,10 @@ const HrDashboardNew = () => {
   const MAX_BAR = 42
 
   const statCards = [
-    { icon:'👥', label:'Total Employees', value:loading?'…':employees.length,                         change:'+3', trend:'up',     cls:'icon-indigo' },
-    { icon:'📅', label:'Present Today',   value:loading?'…':Math.round(employees.length*0.87),        change:'87%', trend:'up',    cls:'icon-emerald' },
-    { icon:'🎫', label:'Open Tickets',    value:loading?'…':openTickets,                              change:`${pendingTickets} in progress`, trend:'neutral', cls:'icon-amber' },
-    { icon:'🔔', label:'Total Tickets',   value:loading?'…':allTickets.length,                        change:`${allTickets.filter(t=>t.status==='resolved').length} resolved`, trend:'neutral', cls:'icon-rose' },
+    { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>), label:'Total Employees', value:loading?'–':employees.length,                         change:'+3', trend:'up',     cls:'icon-indigo' },
+    { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>), label:'Present Today',   value:loading?'–':Math.round(employees.length*0.87),        change:'87%', trend:'up',    cls:'icon-emerald' },
+    { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>), label:'Open Tickets',    value:loading?'–':openTickets,                              change:`${pendingTickets} in progress`, trend:'neutral', cls:'icon-amber' },
+    { icon:(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>), label:'Total Tickets',   value:loading?'–':allTickets.length,                        change:`${allTickets.filter(t=>t.status==='resolved').length} resolved`, trend:'neutral', cls:'icon-rose' },
   ]
 
   return (
@@ -197,7 +197,8 @@ const HrDashboardNew = () => {
               </button>
             </div>
             <Link to="/notifications" className="topbar-icon-btn" title="Notifications">
-              🔔<span className="topbar-notif-dot" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span className="topbar-notif-dot" />
             </Link>
             <div className="topbar-avatar" title={user?.email}>
               {(user?.name||user?.email||'H')[0].toUpperCase()}
@@ -274,8 +275,8 @@ const HrDashboardNew = () => {
                       <h3>Recent Tickets</h3>
                       <button className="view-all-link" onClick={()=>setActiveSection('tickets')}>View all →</button>
                     </div>
-                    {loading ? <div className="empty-state">⏳ Loading…</div> : allTickets.length === 0 ? (
-                      <div className="empty-state"><div className="empty-state-icon">🎉</div>No tickets yet</div>
+                    {loading ? <div className="empty-state">Loading…</div> : allTickets.length === 0 ? (
+                      <div className="empty-state"><div className="empty-state-icon">—</div>No tickets yet</div>
                     ) : allTickets.slice(0,5).map(t => (
                       <div key={t.id} className="ticket-preview-row">
                         <div className="ticket-preview-dot" style={{background: STATUS_COLORS[t.status]||'#6366f1'}}/>
@@ -319,8 +320,8 @@ const HrDashboardNew = () => {
                   <div className="chart-card-header">
                     <h3>All Employees ({employees.length})</h3>
                   </div>
-                  {loading ? <div className="empty-state">⏳ Loading…</div> : employees.length===0 ? (
-                    <div className="empty-state"><div className="empty-state-icon">👥</div>No employees yet</div>
+                  {loading ? <div className="empty-state">Loading…</div> : employees.length===0 ? (
+                    <div className="empty-state"><div className="empty-state-icon">—</div>No employees yet</div>
                   ) : (
                     <div style={{overflowX:'auto'}}>
                       <table className="emp-table">
@@ -375,7 +376,7 @@ const HrDashboardNew = () => {
                           Complaints <span className="tab-count-badge">{allTickets.length}</span>
                         </button>
                         <button className={ticketTab==='emergency'?'active emergency':''} onClick={()=>setTicketTab('emergency')}>
-                          🚨 Emergency <span className="tab-count-badge emergency">{emergencyTickets.length}</span>
+                          Emergency <span className="tab-count-badge emergency">{emergencyTickets.length}</span>
                         </button>
                       </div>
                     </div>
@@ -384,7 +385,7 @@ const HrDashboardNew = () => {
                   {/* Filters */}
                   <div className="tickets-filters">
                     <div className="tickets-search-wrap">
-                      <span className="search-icon">🔍</span>
+                      <span className="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="15" height="15"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                       <input
                         className="tickets-search"
                         placeholder={ticketTab==='normal' ? "Search by employee or title…" : "Search emergency tickets…"}
@@ -406,10 +407,10 @@ const HrDashboardNew = () => {
                     {ticketTab === 'normal' && (
                       <motion.div key="normal" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
                         {loading ? (
-                          <div className="empty-state">⏳ Loading tickets…</div>
+                          <div className="empty-state">Loading tickets…</div>
                         ) : Object.keys(filteredByUser).length === 0 ? (
                           <div className="empty-state">
-                            <div className="empty-state-icon">🎉</div>
+                            <div className="empty-state-icon">—</div>
                             {ticketFilter||statusFilter!=='all' ? 'No tickets match your filters' : 'No complaint tickets yet'}
                           </div>
                         ) : Object.entries(filteredByUser).map(([uEmail, tList]) => (
@@ -435,10 +436,10 @@ const HrDashboardNew = () => {
                     {ticketTab === 'emergency' && (
                       <motion.div key="emergency" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
                         {loading ? (
-                          <div className="empty-state">⏳ Loading…</div>
+                          <div className="empty-state">Loading…</div>
                         ) : filteredEmergency.length === 0 ? (
                           <div className="empty-state">
-                            <div className="empty-state-icon">🛡️</div>
+                            <div className="empty-state-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
                             {ticketFilter||statusFilter!=='all' ? 'No tickets match your filters' : 'No emergency complaints filed'}
                           </div>
                         ) : (
@@ -475,7 +476,7 @@ function TicketCard({ ticket, onStatusChange, updating, isEmergency }) {
     >
       <div className="hr-ticket-top">
         <div className="hr-ticket-title-wrap">
-          {isEmergency && <span className="emergency-label-badge">🚨 EMERGENCY</span>}
+          {isEmergency && <span className="emergency-label-badge">EMERGENCY</span>}
           <div className="hr-ticket-title">{ticket.title}</div>
           <div className="hr-ticket-meta">
             <span className="hr-ticket-cat">{ticket.category}</span>
@@ -503,7 +504,7 @@ function TicketCard({ ticket, onStatusChange, updating, isEmergency }) {
               onClick={() => onStatusChange(ticket.id, s)}
               className={`hr-status-btn ${ticket.status===s?'active':''} status-${s.replace(/\s+/g,'-')}`}
             >
-              {s === 'open' ? '🔓 Open' : s === 'in-progress' ? '⚙️ In Progress' : s === 'resolved' ? '✅ Resolved' : '🔒 Closed'}
+              {s === 'open' ? 'Open' : s === 'in-progress' ? 'In Progress' : s === 'resolved' ? 'Resolved' : 'Closed'}
             </button>
           ))}
         </div>
