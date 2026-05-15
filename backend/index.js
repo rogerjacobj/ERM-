@@ -352,6 +352,7 @@ app.post('/api/employee-tickets', ensureAuth, async (req, res) => {
         await db.collection('tickets').insertOne(ticket)
 
         // Send confirmation email to the employee
+        console.log(`[EMAIL DEBUG] Sending ticket confirmation to: ${email}`)
         sendMail(email, 'Ticket Created — ERM System',
           `<h2>Your ticket has been submitted</h2>
            <p><b>Title:</b> ${title}</p>
