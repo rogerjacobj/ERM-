@@ -1,65 +1,136 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Sidebar from '../components/Sidebar'
+import ToastNotification from '../components/ToastNotification'
+import { API_BASE_URL } from '../config/api'
+import { database, ref, onValue, off } from '../config/firebase'
 import './hr-dashboard-new.css'
 
-const NOTIFS = [
-  { id:1, icon:'user',     color:'#e0e7ff', title:'New Employee Added',  desc:'Alice Johnson joined the Engineering team.',                          time:'2 min ago',  unread:true,  type:'info' },
-  { id:2, icon:'check',   color:'#dcfce7', title:'Leave Approved',       desc:"Bob Smith's leave request has been approved.",                        time:'18 min ago', unread:true,  type:'success' },
-  { id:3, icon:'ticket',  color:'#fef3c7', title:'New Support Ticket',   desc:'Carol White submitted ticket #T-042.',                                time:'1 hr ago',   unread:true,  type:'warning' },
-  { id:4, icon:'alert',   color:'#fee2e2', title:'Emergency Complaint',  desc:'Dan Brown filed an emergency complaint — urgent review needed.',     time:'2 hr ago',   unread:false, type:'danger' },
-  { id:5, icon:'calendar',color:'#f3e8ff', title:'Attendance Reminder',  desc:'3 employees have not clocked in today.',                              time:'3 hr ago',   unread:false, type:'info' },
-  { id:6, icon:'clock',   color:'#e0f2fe', title:'Clock-in Recorded',    desc:'Eva Green clocked in at 09:12 AM.',                                   time:'5 hr ago',   unread:false, type:'info' },
-  { id:7, icon:'report',  color:'#fce7f3', title:'Monthly Report Ready', desc:'April 2025 HR report is ready for download.',                         time:'Yesterday',  unread:false, type:'info' },
-]
-
-const ACTIVITY_LOG = [
-  { icon:'user',     color:'#e0e7ff', text:'HR added Alice Johnson to Engineering',      time:'Apr 28, 09:00 AM' },
-  { icon:'check',   color:'#dcfce7', text:'Leave approved for Bob Smith (5 days)',       time:'Apr 28, 08:45 AM' },
-  { icon:'ticket',  color:'#fef3c7', text:'Ticket #T-042 submitted by Carol White',      time:'Apr 28, 07:30 AM' },
-  { icon:'alert',   color:'#fee2e2', text:'Emergency complaint filed by Dan Brown',       time:'Apr 27, 04:15 PM' },
-  { icon:'calendar',color:'#f3e8ff', text:'Attendance report generated for April 2025',  time:'Apr 27, 12:00 PM' },
-  { icon:'trash',   color:'#fce7f3', text:'Employee Frank removed by HR',                 time:'Apr 26, 03:30 PM' },
-]
-
-const ICON_MAP = {
-  user:     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-  check:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>,
-  ticket:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
-  alert:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
-  calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
-  clock:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-  report:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-  trash:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>,
+function decodeToken() {
+  try { return JSON.parse(atob(localStorage.getItem('token'))) } catch { return null }
 }
 
-const TYPE_COLORS = { info:'#6366f1', success:'#10b981', warning:'#f59e0b', danger:'#f43f5e' }
+const ICON_MAP = {
+  new_ticket:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
+  ticket_update:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>,
+  emergency_update:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  default:      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+}
+
+const TYPE_COLORS = {
+  new_ticket: '#6366f1',
+  ticket_update: '#10b981',
+  emergency_update: '#f43f5e',
+  default: '#8b5cf6',
+}
+const TYPE_BG = {
+  new_ticket: '#e0e7ff',
+  ticket_update: '#dcfce7',
+  emergency_update: '#fee2e2',
+  default: '#f3e8ff',
+}
 
 const Notifications = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [notifs, setNotifs] = useState(NOTIFS)
+  const [notifs, setNotifs] = useState([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
+  const [toasts, setToasts] = useState([])
 
-  const markAll = () => setNotifs(n => n.map(x => ({ ...x, unread: false })))
+  const user = decodeToken()
+  const token = localStorage.getItem('token')
+  const authHdr = { Authorization: token ? `Bearer ${token}` : '' }
+
+  // Fetch notifications from REST API
+  const fetchNotifs = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/notifications`, { headers: authHdr })
+      if (res.ok) {
+        const j = await res.json()
+        setNotifs(j.notifications || [])
+      }
+    } catch (_) {}
+    finally { setLoading(false) }
+  }, [])
+
+  useEffect(() => {
+    if (!token) { window.location.href = '/login'; return }
+    fetchNotifs()
+  }, [])
+
+  // Firebase real-time listener
+  useEffect(() => {
+    if (!database || !user) return
+    const email = user.email || ''
+    const sanitized = email.replace(/[.#$[\]]/g, '_')
+    // Listen to user-specific notifications
+    const userRef = ref(database, `notifications/${sanitized}`)
+    const hrRef = user.role === 'hr' ? ref(database, 'notifications/hr_channel') : null
+
+    const handleSnapshot = (snapshot) => {
+      const data = snapshot.val()
+      if (!data) return
+      const entries = Object.values(data)
+      if (entries.length > 0) {
+        const latest = entries[entries.length - 1]
+        // Show toast for new notifications (within last 10s)
+        if (latest.timestamp && Date.now() - latest.timestamp < 10000) {
+          setToasts(prev => [...prev, { ...latest, id: `toast-${Date.now()}-${Math.random()}` }])
+          fetchNotifs() // Refresh list
+        }
+      }
+    }
+
+    onValue(userRef, handleSnapshot)
+    if (hrRef) onValue(hrRef, handleSnapshot)
+
+    return () => {
+      off(userRef)
+      if (hrRef) off(hrRef)
+    }
+  }, [])
+
+  const removeToast = (id) => setToasts(prev => prev.filter(t => t.id !== id))
+
+  const markAllRead = async () => {
+    setNotifs(n => n.map(x => ({ ...x, read: true })))
+    try {
+      await fetch(`${API_BASE_URL}/api/notifications/read-all`, { method: 'PATCH', headers: authHdr })
+    } catch (_) {}
+  }
+
   const dismiss = (id) => setNotifs(n => n.filter(x => x.id !== id))
 
-  const filtered = filter === 'unread' ? notifs.filter(n => n.unread) : notifs
+  const filtered = filter === 'unread' ? notifs.filter(n => !n.read) : notifs
+  const unreadCount = notifs.filter(n => !n.read).length
 
   const containerV = { hidden:{ opacity:0 }, show:{ opacity:1, transition:{ staggerChildren:0.06 } } }
   const itemV = { hidden:{ opacity:0, y:12 }, show:{ opacity:1, y:0, transition:{ type:'spring', stiffness:80, damping:14 } } }
 
+  const formatTime = (dateStr) => {
+    if (!dateStr) return ''
+    const d = new Date(dateStr)
+    const now = new Date()
+    const diff = now - d
+    if (diff < 60000) return 'Just now'
+    if (diff < 3600000) return `${Math.floor(diff/60000)} min ago`
+    if (diff < 86400000) return `${Math.floor(diff/3600000)} hr ago`
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
+
   return (
     <div className="app-shell">
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <ToastNotification toasts={toasts} removeToast={removeToast} />
       <div className={`main-content ${collapsed ? 'sidebar-collapsed' : ''}`}>
         <div className="topbar">
           <div className="topbar-left">
             <h1>Notifications</h1>
-            <p>{notifs.filter(n=>n.unread).length} unread alerts</p>
+            <p>{unreadCount} unread alerts</p>
           </div>
           <div className="topbar-right">
-            <button onClick={markAll} style={{ padding:'0.5rem 1rem', background:'#6366f1', color:'#fff', border:'none', borderRadius:'8px', fontFamily:'var(--font-heading)', fontWeight:600, fontSize:'0.82rem', cursor:'pointer' }}>
-              ✓ Mark all read
+            <button onClick={markAllRead} style={{ padding:'0.5rem 1rem', background:'#6366f1', color:'#fff', border:'none', borderRadius:'8px', fontFamily:'var(--font-heading)', fontWeight:600, fontSize:'0.82rem', cursor:'pointer' }}>
+              Mark all read
             </button>
           </div>
         </div>
@@ -73,71 +144,55 @@ const Notifications = () => {
                   background: filter===f ? '#6366f1' : 'transparent',
                   color: filter===f ? '#fff' : '#64748b',
                   borderColor: filter===f ? '#6366f1' : 'rgba(0,0,0,0.1)' }}>
-                {f === 'all' ? 'All Notifications' : `Unread (${notifs.filter(n=>n.unread).length})`}
+                {f === 'all' ? 'All Notifications' : `Unread (${unreadCount})`}
               </button>
             ))}
           </motion.div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1.5rem', alignItems:'start' }}>
-            {/* Notification list */}
-            <motion.div className="chart-card" variants={itemV} style={{ gridColumn: '1 / 2' }}>
-              <div className="chart-card-header" style={{ marginBottom:'1rem' }}>
-                <h3>Alerts</h3>
-              </div>
-              <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
+          <motion.div className="chart-card" variants={itemV}>
+            <div className="chart-card-header" style={{ marginBottom:'1rem' }}>
+              <h3>Alerts</h3>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
+              {loading ? (
+                <div className="empty-state">Loading notifications…</div>
+              ) : filtered.length === 0 ? (
+                <div className="empty-state">
+                  <div className="empty-state-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="28" height="28"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </div>
+                  {filter === 'unread' ? 'No unread notifications' : 'No notifications yet'}
+                </div>
+              ) : (
                 <AnimatePresence>
-                  {filtered.length === 0 && (
-                    <div className="empty-state">
-                      <div className="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="28" height="28"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-                      No notifications
-                    </div>
-                  )}
                   {filtered.map(n => (
-                    <motion.div key={n.id}
+                    <motion.div key={n.id || n._id}
                       layout
                       initial={{ opacity:0, x:-10 }}
                       animate={{ opacity:1, x:0 }}
                       exit={{ opacity:0, x:20, height:0 }}
                       style={{ display:'flex', gap:'0.85rem', padding:'0.9rem 0', borderBottom:'1px solid rgba(0,0,0,0.04)', alignItems:'flex-start', position:'relative' }}>
-                      {n.unread && (
-                        <div style={{ position:'absolute', left:-4, top:'50%', transform:'translateY(-50%)', width:8, height:8, borderRadius:'50%', background: TYPE_COLORS[n.type] }} />
+                      {!n.read && (
+                        <div style={{ position:'absolute', left:-4, top:'50%', transform:'translateY(-50%)', width:8, height:8, borderRadius:'50%', background: TYPE_COLORS[n.type] || TYPE_COLORS.default }} />
                       )}
-                      <div style={{ width:38, height:38, borderRadius:'50%', background:n.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', flexShrink:0 }}>
-                        {ICON_MAP[n.icon] || n.icon}
+                      <div style={{ width:38, height:38, borderRadius:'50%', background: TYPE_BG[n.type] || TYPE_BG.default, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', flexShrink:0 }}>
+                        {ICON_MAP[n.type] || ICON_MAP.default}
                       </div>
                       <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'0.5rem' }}>
-                          <div style={{ fontWeight: n.unread ? 700 : 500, fontSize:'0.875rem', color:'#0f172a' }}>{n.title}</div>
-                          <button onClick={() => dismiss(n.id)}
+                          <div style={{ fontWeight: !n.read ? 700 : 500, fontSize:'0.875rem', color:'#0f172a' }}>{n.title}</div>
+                          <button onClick={() => dismiss(n.id || n._id)}
                             style={{ background:'none', border:'none', color:'#94a3b8', cursor:'pointer', fontSize:'1rem', flexShrink:0, lineHeight:1, padding:0 }}>✕</button>
                         </div>
-                        <div style={{ fontSize:'0.8rem', color:'#64748b', marginTop:2 }}>{n.desc}</div>
-                        <div style={{ fontSize:'0.72rem', color:'#94a3b8', marginTop:4 }}>{n.time}</div>
+                        <div style={{ fontSize:'0.8rem', color:'#64748b', marginTop:2 }}>{n.message}</div>
+                        <div style={{ fontSize:'0.72rem', color:'#94a3b8', marginTop:4 }}>{formatTime(n.createdAt || n.timestamp)}</div>
                       </div>
                     </motion.div>
                   ))}
                 </AnimatePresence>
-              </div>
-            </motion.div>
-
-            {/* Activity log */}
-            <motion.div className="chart-card" variants={itemV} style={{ gridColumn:'2 / 3' }}>
-              <div className="chart-card-header" style={{ marginBottom:'1rem' }}>
-                <h3>Activity Log</h3>
-              </div>
-              <div className="activity-feed">
-                {ACTIVITY_LOG.map((a, i) => (
-                  <div key={i} className="activity-item">
-                    <div className="activity-icon" style={{ background:a.color }}>{ICON_MAP[a.icon] || a.icon}</div>
-                    <div className="activity-body">
-                      <div className="activity-text">{a.text}</div>
-                      <div className="activity-time">{a.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+              )}
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>

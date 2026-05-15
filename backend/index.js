@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const nodemailer = require('nodemailer');
 
 dotenv.config();
 console.log(process.env.MONGO_URI);
@@ -11,6 +11,94 @@ const app = express();
 app.use(express.json());
 // Allow frontend dev server to call this API during development
 app.use(cors({ origin: true }));
+
+// ─── Firebase Admin SDK ───
+const admin = require('firebase-admin');
+const firebaseConfig = {
+  projectId: process.env.FIREBASE_PROJECT_ID || 'erm-notifications-app',
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL || '',
+  privateKey: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+  databaseURL: process.env.FIREBASE_DATABASE_URL || ''
+};
+let firebaseDb = null;
+try {
+  if (firebaseConfig.databaseURL && firebaseConfig.privateKey) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: firebaseConfig.projectId,
+        clientEmail: firebaseConfig.clientEmail,
+        privateKey: firebaseConfig.privateKey,
+      }),
+      databaseURL: firebaseConfig.databaseURL,
+    });
+    firebaseDb = admin.database();
+    console.log('Firebase Admin initialized');
+  } else {
+    console.log('Firebase Admin skipped — missing config');
+  }
+} catch (err) {
+  console.log('Firebase Admin init error:', err.message);
+}
+
+// ─── Nodemailer Transporter ───
+const EMAIL_USER = process.env.EMAIL_USER || '';
+const EMAIL_PASS = process.env.EMAIL_PASS || '';
+
+// Helper: find all HR user emails from MongoDB
+async function getHrEmails() {
+  if (!db) return [];
+  try {
+    const hrUsers = await db.collection('employees').find({ role: 'hr' }).toArray();
+    return hrUsers.map(u => u.email).filter(Boolean);
+  } catch { return []; }
+}
+let mailTransporter = null;
+if (EMAIL_USER && EMAIL_PASS) {
+  mailTransporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+  });
+  mailTransporter.verify().then(() => console.log('Email transporter ready')).catch(e => console.log('Email error:', e.message));
+} else {
+  console.log('Email skipped — missing EMAIL_USER/EMAIL_PASS');
+}
+
+// Helper: send email (non-blocking, logs errors)
+async function sendMail(to, subject, html) {
+  if (!mailTransporter) return;
+  try {
+    await mailTransporter.sendMail({ from: `"ERM System" <${EMAIL_USER}>`, to, subject, html });
+    console.log(`Email sent to ${to}: ${subject}`);
+  } catch (err) { console.error('Email send failed:', err.message); }
+}
+
+// Helper: push notification to Firebase Realtime DB
+async function pushNotification(userEmail, notification) {
+  const now = Date.now();
+  const doc = {
+    id: `notif-${now}-${Math.random().toString(36).slice(2,8)}`,
+    targetEmail: userEmail,
+    type: notification.type || 'info',
+    title: notification.title || '',
+    message: notification.message || '',
+    ticketId: notification.ticketId || null,
+    read: false,
+    createdAt: new Date().toISOString(),
+  };
+  // Save to MongoDB
+  try {
+    if (db) await db.collection('notifications').insertOne(doc);
+  } catch (err) { console.error('Notification DB save failed:', err.message); }
+  // Push to Firebase Realtime DB
+  if (firebaseDb) {
+    try {
+      const sanitized = userEmail.replace(/[.#$[\]]/g, '_');
+      const ref = firebaseDb.ref(`notifications/${sanitized}`);
+      await ref.push({ ...notification, timestamp: now, read: false });
+      console.log(`Firebase notification pushed for ${userEmail}`);
+    } catch (err) { console.error('Firebase push failed:', err.message); }
+  }
+}
 
 // Simple health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
@@ -262,6 +350,37 @@ app.post('/api/employee-tickets', ensureAuth, async (req, res) => {
         }
 
         await db.collection('tickets').insertOne(ticket)
+
+        // Send confirmation email to the employee
+        sendMail(email, 'Ticket Created — ERM System',
+          `<h2>Your ticket has been submitted</h2>
+           <p><b>Title:</b> ${title}</p>
+           <p><b>Category:</b> ${category || 'general'}</p>
+           <p><b>Description:</b> ${description}</p>
+           <p>Ticket ID: <code>${ticket.id}</code></p>
+           <p>We'll notify you when HR updates the status.</p>`
+        )
+
+        // Notify all HR users via email (fetched from MongoDB)
+        getHrEmails().then(hrEmails => {
+          hrEmails.forEach(hrEmail => {
+            sendMail(hrEmail, `New Ticket from ${email}`,
+              `<h2>New complaint ticket submitted</h2>
+               <p><b>From:</b> ${email}</p>
+               <p><b>Title:</b> ${title}</p>
+               <p><b>Category:</b> ${category || 'general'}</p>
+               <p><b>Description:</b> ${description}</p>`
+            )
+          })
+        })
+
+        // Push real-time notification to HR via Firebase
+        pushNotification('hr_channel', {
+          type: 'new_ticket', title: 'New Support Ticket',
+          message: `${email} submitted: ${title}`,
+          ticketId: ticket.id, category: ticket.category,
+        })
+
         return res.status(201).json({ ticket })
     } catch (err) {
         console.error(err)
@@ -291,6 +410,25 @@ app.patch('/api/employee-tickets/:id', ensureAuth, async (req, res) => {
         }
 
         const updated = await db.collection('tickets').findOne({ id })
+
+        // Email + Firebase notification when status changes
+        if (status && ['resolved','rejected','closed'].includes(status)) {
+          const statusLabel = status.charAt(0).toUpperCase() + status.slice(1)
+          sendMail(ticket.ownerEmail, `Ticket ${statusLabel} — ERM System`,
+            `<h2>Your ticket has been ${statusLabel.toLowerCase()}</h2>
+             <p><b>Title:</b> ${ticket.title}</p>
+             <p><b>Status:</b> ${statusLabel}</p>
+             <p><b>Ticket ID:</b> ${ticket.id}</p>
+             <p>If you have questions, contact HR.</p>`
+          )
+          // Push notification to the employee
+          pushNotification(ticket.ownerEmail, {
+            type: 'ticket_update', title: `Ticket ${statusLabel}`,
+            message: `Your ticket "${ticket.title}" has been ${statusLabel.toLowerCase()}.`,
+            ticketId: ticket.id,
+          })
+        }
+
         return res.json({ ticket: updated })
     } catch (err) {
         console.error(err)
@@ -575,12 +713,108 @@ app.patch('/api/emergency-complaints/:id', ensureAuth, async (req, res) => {
         const { id } = req.params
         const { status } = req.body || {}
         if (!status) return res.status(400).json({ message: 'status is required' })
+
+        const complaint = await db.collection('emergency_complaints').findOne({ id })
         await db.collection('emergency_complaints').updateOne({ id }, { $set: { status } })
         const updated = await db.collection('emergency_complaints').findOne({ id })
+
+        // Email + Firebase notification on resolution
+        if (complaint && ['resolved','rejected','closed'].includes(status)) {
+          const statusLabel = status.charAt(0).toUpperCase() + status.slice(1)
+          sendMail(complaint.employeeEmail, `Emergency Complaint ${statusLabel} — ERM`,
+            `<h2>Your emergency complaint has been ${statusLabel.toLowerCase()}</h2>
+             <p><b>Title:</b> ${complaint.title}</p>
+             <p><b>Status:</b> ${statusLabel}</p>
+             <p>Contact HR if you need further assistance.</p>`
+          )
+          pushNotification(complaint.employeeEmail, {
+            type: 'emergency_update', title: `Emergency ${statusLabel}`,
+            message: `Your emergency complaint "${complaint.title}" has been ${statusLabel.toLowerCase()}.`,
+            ticketId: id,
+          })
+        }
+
         return res.json({ complaint: updated })
     } catch (err) {
         console.error(err)
         return res.status(500).json({ message: 'Failed to update complaint' })
+    }
+})
+
+// ─── Notifications REST API (backed by MongoDB) ───
+// GET /api/notifications — get notifications for current user
+app.get('/api/notifications', ensureAuth, async (req, res) => {
+    try {
+        const { email, role } = req.user
+        const filter = role === 'hr' ? {} : { targetEmail: email }
+        const notifs = await db.collection('notifications')
+          .find(filter).sort({ createdAt: -1 }).limit(50).toArray()
+        return res.json({ notifications: notifs })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to fetch notifications' })
+    }
+})
+
+// PATCH /api/notifications/:id/read — mark notification as read
+app.patch('/api/notifications/:id/read', ensureAuth, async (req, res) => {
+    try {
+        const { id } = req.params
+        await db.collection('notifications').updateOne({ id }, { $set: { read: true } })
+        return res.json({ ok: true })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to mark notification' })
+    }
+})
+
+// PATCH /api/notifications/read-all — mark all as read
+app.patch('/api/notifications/read-all', ensureAuth, async (req, res) => {
+    try {
+        const { email, role } = req.user
+        const filter = role === 'hr' ? {} : { targetEmail: email }
+        await db.collection('notifications').updateMany(filter, { $set: { read: true } })
+        return res.json({ ok: true })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed' })
+    }
+})
+
+// ─── Reports API — aggregate data ───
+app.get('/api/reports/summary', ensureAuth, async (req, res) => {
+    try {
+        const { role } = req.user
+        if (role !== 'hr') return res.status(403).json({ message: 'HR only' })
+
+        const totalEmployees = await db.collection('employees').countDocuments()
+        const tickets = await db.collection('tickets').find().toArray()
+        const totalTickets = tickets.length
+        const resolvedTickets = tickets.filter(t => t.status === 'resolved').length
+        const openTickets = tickets.filter(t => t.status === 'open').length
+
+        // Category breakdown
+        const categoryMap = {}
+        tickets.forEach(t => {
+            const cat = t.category || 'general'
+            categoryMap[cat] = (categoryMap[cat] || 0) + 1
+        })
+        const ticketsByCategory = Object.entries(categoryMap).map(([category, count]) => ({ category, count }))
+
+        // Department breakdown from employees
+        const employees = await db.collection('employees').find().toArray()
+        const deptMap = {}
+        employees.forEach(e => {
+            const dept = e.department || 'General'
+            if (!deptMap[dept]) deptMap[dept] = { employees: 0 }
+            deptMap[dept].employees++
+        })
+        const departments = Object.entries(deptMap).map(([name, data]) => ({ name, ...data }))
+
+        return res.json({ totalEmployees, totalTickets, resolvedTickets, openTickets, ticketsByCategory, departments })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Failed to generate report' })
     }
 })
 
@@ -593,9 +827,19 @@ app.listen(PORT, () => {
 
 // Connect to DB in background
 connectAndSeed()
-    .then(() => {
+    .then(async () => {
         console.log('Database initialization complete.');
+        // Create indexes for fast lookups
+        try {
+            await db.collection('employees').createIndex({ email: 1 }, { unique: true, sparse: true });
+            await db.collection('tickets').createIndex({ ownerEmail: 1 });
+            await db.collection('tickets').createIndex({ id: 1 }, { unique: true, sparse: true });
+            await db.collection('attendance').createIndex({ employeeEmail: 1, date: -1 });
+            await db.collection('notifications').createIndex({ targetEmail: 1, createdAt: -1 });
+            console.log('DB indexes created');
+        } catch (e) { console.log('Index creation note:', e.message); }
     })
     .catch(err => {
         console.error('Failed to connect to DB:', err);
-    });
+    });
+
