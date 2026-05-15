@@ -3,13 +3,13 @@ import { getDatabase, ref, onValue, off } from 'firebase/database'
 
 // Firebase config — replace with your project's config
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || '',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'erm-notifications-app',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyCVFf1UhfF1ovjgabq7N25ZhzuPFKSdh_E',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'erm-system-8ca20.firebaseapp.com',
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || 'https://erm-system-8ca20-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'erm-system-8ca20',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'erm-system-8ca20.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '486576149553',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:486576149553:web:488917ad6356dd8007b110',
 }
 
 let app = null
